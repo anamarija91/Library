@@ -1,0 +1,117 @@
+USE [Library]
+
+GO
+
+-- USERS
+
+SET IDENTITY_INSERT [dbo].[User] ON
+
+INSERT INTO [dbo].[User]
+           ([Id]
+		   ,[FirstName]
+           ,[LastName]
+           ,[DateOfBirth]
+           ,[Email]
+           ,[Address]
+		   ,[PhoneNumber])
+     VALUES
+		  (1, 'Chuck', 'Gates', '12/31/1969', 'eu@ridiculus.com', 'Donec Avenue 180', '(333) 533-7717'),
+		  (2, 'Ruby', 'Richard', '01/03/1983', 'ru.rich@adipiscing.com', 'Cras Street 14', '(584) 908-7399'),
+		  (3, 'Cynthia', 'Wilcox', '10/25/1999', 'cynthia@erat.edu', 'Sem. Rd.  2', '(236) 622-2482'),
+		  (4, 'Carson', 'Weeks', '02/03/1978', 'weeks.carson@egetmetus.org', 'Auctor Road 100', '(330) 912-1374'),
+		  (5, 'Colette', 'Foley', '05/04/2010', 'facilisis.lorem@consequatnec.co.m', 'Montes, St. 69', '(565) 158-3387')
+  
+GO
+
+SET IDENTITY_INSERT [dbo].[User] OFF
+
+-- BOOK TITLES
+
+SET IDENTITY_INSERT [BookTitle] ON
+
+INSERT INTO [dbo].[BookTitle]
+           ([Id]
+		   ,[Title]
+           ,[Author])
+     VALUES
+			(1, 'Harry Potter and the Philosopher''s stone', 'J.K. Rowling'),
+			(2, 'The Great Gatsby', 'F. Scott Fitzgerald'),
+			(3, 'The Lord of the Rings', 'J.R.R. Tolkien'),
+			(4, 'To the Lighthouse', 'Virginia Wolf'),
+			(5, 'Clean Architecture', 'Robert C. Martin'),
+			(6, 'Animal Farm', 'George Orwell'),
+			(7, 'The Chronicles of Narnia', 'C.S. Lewis'),
+			(8, 'The Portrait of a Lady', 'Charles Dickens'),
+			(9, 'Charlotte''s Web', 'E.B. White'),
+			(10, 'The Old Man and the Sea', 'Ernest Hemingway'),
+			(11, ' The Call of the Wild', 'Jack London'),
+			(12, 'Foundation', 'Isac Asimov')
+
+GO
+
+SET IDENTITY_INSERT [dbo].[BookTitle] OFF
+
+-- BOOK COPY
+
+SET IDENTITY_INSERT [dbo].[BookCopy] ON
+
+INSERT INTO [dbo].[BookCopy]
+           ([Id],
+		   [BookTitleId])
+     VALUES
+           (1,1),
+		   (2,1),
+		   (3,1),
+		   (4,2),
+		   (5,3),
+		   (6,4),
+		   (7,5),
+		   (8,3),
+		   (9,6),
+		   (10,10),
+		   (11,10),
+		   (12,2),
+		   (13,11),
+		   (14,1),
+		   (15,7),
+		   (16,2),
+		   (17,4),
+		   (18,5),
+		   (19,1),
+		   (20,2),
+		   (21,8),
+		   (22,6),
+		   (23,3),
+		   (24,2),
+		   (25,7),
+		   (26,9),
+		   (27,1),
+		   (28,2)
+
+GO
+
+SET IDENTITY_INSERT [dbo].[BookCopy] OFF
+
+-- Rental
+
+SET IDENTITY_INSERT [dbo].[Rental] ON
+
+INSERT INTO [dbo].[Rental]
+           ([Id]
+		   ,[UserId]
+		   ,[BookCopyId]
+           ,[DateRented]
+           ,[DateDue]
+           ,[DateReturned]
+           )
+     VALUES
+           (1, 1, 3, '02/01/2020',  '03/03/2020', NULL),
+		   (2, 1, 5, '02/01/2020',  '03/30/2020', NULL),
+		   (3, 2, 4, '05/04/2020',  '06/03/2020', NULL),
+		   (4, 3, 4, '02/29/2020',  '04/03/2020', '04/04/2020'),
+		   (5, 4, 5, '01/05/2020',  '01/31/2020', NULL),
+		   (6, 5, 10, '03/11/2020',  '04/29/2020', '04/10/2020'),
+		   (7, 3, 10, '04/15/2020',  '05/15/2020', '06/10/2020'),
+		   (8, 5, 10, '07/01/2020',  '07/31/2020', NULL)   
+
+SET IDENTITY_INSERT [dbo].[Rental] OFF

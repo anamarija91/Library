@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Library.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Library.Api.Controllers.BookTitlesController">
+            <summary>
+            Defines book titles controller.
+            </summary>
+        </member>
+        <member name="M:Library.Api.Controllers.BookTitlesController.#ctor(Library.Core.Services.IBookTitlesService)">
+            <summary>
+            Initializes new instance of book titles controller.
+            </summary>
+            <param name="bookTitlesService"></param>
+        </member>
+        <member name="M:Library.Api.Controllers.BookTitlesController.GetBookTitleRentalDetails(System.Int32)">
+            <summary>
+            Gets BookTitle rent details
+            </summary>
+            <param name="bookTitleId">Book Title Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Controllers.RentalsController">
+            <summary>
+            Defines rental controller.
+            </summary>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.#ctor(Library.Core.Services.IRentalService)">
+            <summary>
+            Initialize a new instance of <see cref="T:Library.Api.Controllers.RentalsController"/> class.
+            </summary>
+            <param name="rentalService">Rental service.</param>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.GetAll">
+            <summary>
+            Get all rentals.
+            </summary>
+            <returns>Returns list of rentals as <see cref="T:Library.Core.Results.RentalResult"/></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.Get(System.Int32)">
+            <summary>
+            Gets rental by id.
+            </summary>
+            <param name="id">Rental id</param>
+            <returns>Returns rental as <see cref="T:Library.Core.Results.RentalResult"/></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.Post(Library.Core.Requests.CreateRentalRequest)">
+            <summary>
+            Creates new rental / Borrows new book copy
+            </summary>
+            <param name="request">Rental create request as <see cref="T:Library.Core.Requests.CreateRentalRequest"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.GetTopUsersOverdueTimes(System.Int32)">
+            <summary>
+            Finds top N users by Total Overdue
+            </summary>
+            <param name="numberOfTopUsers">N</param>
+            <returns>Returns list of users with their overdue as <see cref="T:Library.Core.Results.OverdueResult"/></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.RentalsController.ReturnBookCopy(Library.Core.Requests.PatchRentalRequest)">
+            <summary>
+            Update rentals with date of returned book for user and book copy
+            </summary>
+            <param name="request">Update request with UserId, BookCopyId and ReturnDate</param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Controllers.UsersController">
+            <summary>
+            Defines user controller.
+            </summary>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.#ctor(Library.Core.Services.IUserService)">
+            <summary>
+            Initialize a new instance of <see cref="T:Library.Api.Controllers.UsersController"/> class.
+            </summary>
+            <param name="userService">Users service.</param>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.GetAll(Library.Core.Model.PagingFilteringModel)">
+            <summary>
+            Get all users.
+            </summary>
+            <param name="model">Filtering model from query <see cref="T:Library.Core.Model.PagingFilteringModel"/></param>
+            <returns>Returns list of users as <see cref="T:Library.Core.Results.UserResult"/></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.Get(System.Int32)">
+            <summary>
+            Gets user by id.
+            </summary>
+            <param name="id">User id</param>
+            <returns>Returns user as <see cref="T:Library.Core.Results.UserResult"/></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.Post(Library.Core.Requests.UserCreateRequest)">
+            <summary>
+            Create new user.
+            </summary>
+            <param name="request">User create request as <see cref="T:Library.Core.Requests.UserCreateRequest"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.Put(System.Int32,Library.Core.Requests.UserUpdateRequest)">
+            <summary>
+            Update user.
+            </summary>
+            <param name="request">User update request as <see cref="T:Library.Core.Requests.UserUpdateRequest"/></param>
+            <param name="id">User id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.Delete(System.Int32)">
+            <summary>
+            Delete user.
+            </summary>
+            <param name="id">User id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Extensions.Configuration.ConfigurationExtension">
+            <summary>
+            Defines configuration extension.
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.Configuration.ConfigurationExtension.FormatConfigurationSection(Microsoft.Extensions.Configuration.IConfiguration,System.String,System.String)">
+            <summary>
+            Formats configuration extension for section and it's child properties.
+            </summary>
+            <param name="configuration">Configuration.</param>
+            <param name="sectionKey">Section key.</param>
+            <param name="formattingKey">Formatting key.</param>
+            <returns>Returns formated configuration for section. Formatting is defined in formatting key section.</returns>
+        </member>
+        <member name="M:Library.Api.Extensions.Configuration.ConfigurationExtension.CreateConnectionString(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Calls creation of connection string.
+            </summary>
+            <param name="configuration">Configuration.</param>
+            <param name="sectionKey">Section key.</param>
+            <returns>Return foramted configuration.</returns>
+        </member>
+        <member name="T:Library.Api.Extensions.ServiceDependancyInjection">
+            <summary>
+            Defines class for adding services
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.ServiceDependancyInjection.AddServicesToDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds services to dependency injection.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Extensions.SettingsDependancyInjection">
+            <summary>
+            Defines class for adding Validatable settings
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.SettingsDependancyInjection.AddSettingsToDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Adds validatable settings to dependency injection.
+            </summary>
+            <param name="services">Services for extension.</param>
+            <param name="configuration">Configuration.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Extensions.Swagger.SwaggerServiceExtension">
+            <summary>
+            Defines extension class for swagger services
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.Swagger.SwaggerServiceExtension.AddSwaggerDocumentation(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            Sets up all swagger services components.
+            </summary>
+            <param name="services">Collection of service descriptors.</param>
+            <param name="title">Title.</param>
+            <returns>Returns updated services.</returns>
+        </member>
+        <member name="M:Library.Api.Extensions.Swagger.SwaggerServiceExtension.UseSwaggerDocumentation(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Sets app swagger for application builder.
+            </summary>
+            <param name="app">Application pipeline.</param>
+            <returns>Returns updated application pipeline.</returns>
+        </member>
+        <member name="T:Library.Api.Extensions.ValidatorDependancyInjection">
+            <summary>
+            Defines class for adding validators
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.ValidatorDependancyInjection.AddValidatorsToDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds validators to dependency injection.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Program">
+            <summary>
+            Defines program class
+            </summary>
+        </member>
+        <member name="M:Library.Api.Program.Main(System.String[])">
+            <summary>
+            Entry point of application
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Library.Api.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Creates host at startup
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Api.Startup">
+            <summary>
+            Defines startup class.
+            </summary>
+        </member>
+        <member name="P:Library.Api.Startup.Configuration">
+            <summary>
+            Gets configuration
+            </summary>
+        </member>
+        <member name="M:Library.Api.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of <see cref="T:Library.Api.Startup"/> class.
+            </summary>
+            <param name="configuration">Configuration</param>
+        </member>
+        <member name="M:Library.Api.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+             Adds funcionality to API.
+                - Controllers
+                - Swagger documentation    
+                - Filtering, Sorting, Paging
+                - Database    
+                - Dependancy Injection configuration (Services, Validatable settings)
+                - HttpContext Accessor
+                - Unit of work
+                - Validation
+                
+                Missing:
+                -- Versioning
+                -- Authorization
+                -- Logging
+                -- Cors
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Library.Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Configure HTTP request pipeline.
+            
+                - Middleware
+                - Routing
+                - Swagger
+                - Endpoints
+                
+             Missing:
+                
+                - Authentication
+                - Cors
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

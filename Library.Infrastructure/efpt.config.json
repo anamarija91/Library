@@ -1,0 +1,41 @@
+﻿{
+   "ContextClassName": "LibraryContext",
+   "ContextNamespace": "Infrastructure.EfModels",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": "Core.Model.Entities",
+   "OutputContextPath": "..\/Library.Infrastructure\/EfModels",
+   "OutputPath": "..\/Library.Core\/Model\/Entities",
+   "ProjectRootNamespace": "Library",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[BookCopy]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[BookTitle]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Rental]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[User]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNodaTime": false,
+   "UseSpatial": false,
+   "UseStoredProcedures": false
+}

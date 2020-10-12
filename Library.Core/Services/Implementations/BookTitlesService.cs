@@ -13,16 +13,16 @@ namespace Library.Core.Services
     public class BookTitlesService
         : ServiceBase, IBookTitlesService
     {
-        private readonly IRentalService _rentalService;
+        private readonly IRentalService rentalService;
 
         /// <summary>
         /// Initilizes new instance of <see cref="BookTitlesService"/>
         /// </summary>
         /// <param name="unitOfWork">Unit of work.</param>
-        public BookTitlesService(IUnitOfWork unitOfWork, IRentalService rentalService) 
+        public BookTitlesService(IUnitOfWork unitOfWork, IRentalService rentalService)
             : base(unitOfWork)
         {
-            _rentalService = rentalService ?? throw new ArgumentNullException(nameof(rentalService));
+            this.rentalService = rentalService ?? throw new ArgumentNullException(nameof(rentalService));
         }
 
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace Library.Core.Services
 
             var bookCopyIds = await UnitOfWork.BookTitles.GetBookCopyIds(bookTitleId);
 
-            var rentals = await _rentalService.GetRentHistoryForBookCopies(bookCopyIds);
+            var rentals = await rentalService.GetRentHistoryForBookCopies(bookCopyIds);
 
             return rentals;
         }

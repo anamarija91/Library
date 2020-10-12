@@ -9,14 +9,14 @@ namespace Library.Infrastructure.SieveProcessors
     /// <summary>
     /// Defines sieve processor for library
     /// </summary>
-    public class LibrarySieveProcessor 
+    public class LibrarySieveProcessor
         : SieveProcessor
     {
         /// <summary>
         /// Initialize new instance of <see cref="LibrarySieveProcessor"/> class.
         /// </summary>
         /// <param name="options"></param>
-        public LibrarySieveProcessor(IOptions<SieveOptions> options) 
+        public LibrarySieveProcessor(IOptions<SieveOptions> options)
             : base(options)
         {
         }

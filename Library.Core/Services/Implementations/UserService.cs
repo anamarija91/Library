@@ -22,7 +22,7 @@ namespace Library.Core.Services
         /// Initilizes new instance of <see cref="UserService"/>
         /// </summary>
         /// <param name="unitOfWork">Unit of work.</param>
-        public UserService(IUnitOfWork unitOfWork) 
+        public UserService(IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
 
@@ -64,7 +64,7 @@ namespace Library.Core.Services
         /// <inheritdoc />
         public async Task<UserResult> GetById(int userId)
         {
-            var user = await  ValidatorUtility.GetById(UnitOfWork.Users, userId);
+            var user = await ValidatorUtility.GetById(UnitOfWork.Users, userId);
 
             return new UserResult(user);
         }

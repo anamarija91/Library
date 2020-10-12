@@ -11,7 +11,7 @@ namespace Library.Core.Repositories
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <typeparam name="TPrimaryKey">Entity primary key</typeparam>
-    public interface IRepository<TEntity, TPrimaryKey> 
+    public interface IRepository<TEntity, TPrimaryKey>
         where TEntity : class
     {
         /// <summary>

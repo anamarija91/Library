@@ -21,11 +21,11 @@ namespace Library.Core.Services
         /// Initilizes new instance of <see cref="RentalService"/>
         /// </summary>
         /// <param name="unitOfWork">Unit of work.</param>
-        public RentalService(IUnitOfWork unitOfWork) 
+        public RentalService(IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
 
-        }     
+        }
 
         /// <inheritdoc />
         public async Task<IEnumerable<RentalResult>> GetAll()
@@ -78,8 +78,8 @@ namespace Library.Core.Services
 
             entity.DateReturned = Helpers.GetDateFromString(patchRentalRequest.DateReturned, ProjectConstants.DateFormat);
 
-             UnitOfWork.Rentals.Update(entity);
-            await UnitOfWork.Commit();        
+            UnitOfWork.Rentals.Update(entity);
+            await UnitOfWork.Commit();
         }
 
 

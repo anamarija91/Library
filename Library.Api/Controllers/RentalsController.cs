@@ -13,7 +13,7 @@ namespace Library.Api.Controllers
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    public class RentalsController 
+    public class RentalsController
         : ControllerBase
     {
         private readonly IRentalService rentalService;

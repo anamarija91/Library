@@ -18,7 +18,7 @@ namespace Library.Api.Extensions
             _ = services.AddScoped<IUserService, UserService>();
             _ = services.AddScoped<IRentalService, RentalService>();
             _ = services.AddScoped<IBookTitlesService, BookTitlesService>();
-
+            _ = services.AddScoped<IMicroblinkClientService, MicroblinkClientService>();
             return services;
         }
     }

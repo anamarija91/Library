@@ -8,11 +8,11 @@ using System;
 using System.Threading.Tasks;
 
 namespace Library.Infrastructure.EfUnitsOfWork
-{  
+{
     /// <summary>
-   /// Defines unit of work.
-   /// </summary>
-    public class UnitOfWork 
+    /// Defines unit of work.
+    /// </summary>
+    public class UnitOfWork
         : IUnitOfWork
     {
         private readonly LibraryContext context;

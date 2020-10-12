@@ -14,7 +14,7 @@ namespace Library.Infrastructure.EfRepositories
     /// <summary>
     /// Defines Rental repository class.
     /// </summary>
-    public class RentalRepository 
+    public class RentalRepository
         : RepositoryBase<Rental, int>, IRentalRepository
     {
         /// <summary>
@@ -22,7 +22,7 @@ namespace Library.Infrastructure.EfRepositories
         /// </summary>
         /// <param name="context">Library context</param>
         /// <param name="processor">Sieve processor</param>
-        public RentalRepository(LibraryContext context, ISieveProcessor processor) 
+        public RentalRepository(LibraryContext context, ISieveProcessor processor)
             : base(context, processor)
         {
         }

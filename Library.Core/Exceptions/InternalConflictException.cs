@@ -4,7 +4,7 @@ namespace Library.Core.Exceptions
     /// <summary>
     /// Defines exception that is thrown when there is a request conflict with current state of the target resource
     /// </summary>
-    public class InternalConflictException 
+    public class InternalConflictException
         : CustomException
     {
         /// <summary>

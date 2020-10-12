@@ -1,8 +1,8 @@
-﻿using Library.Core.Utils;
+﻿using Library.Core.Clients;
+using Library.Core.Utils;
 using Library.Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Library.Api.Extensions
 {
@@ -20,6 +20,7 @@ namespace Library.Api.Extensions
         public static IServiceCollection AddSettingsToDependencyInjection(this IServiceCollection services, IConfiguration configuration)
         {
             _ = services.ConfigureValidatableSetting<DatabaseSettings>(configuration?.GetSection(ProjectConstants.DatabaseSection));
+            _ = services.ConfigureValidatableSetting<MicroblinkSettings>(configuration?.GetSection(ProjectConstants.MicroblinkSection));
 
             return services;
         }

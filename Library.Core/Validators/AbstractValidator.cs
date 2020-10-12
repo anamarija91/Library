@@ -15,12 +15,12 @@ namespace Library.Core.Validators
     /// <typeparam name="TRequest">Request type.</typeparam>
     /// <typeparam name="TEntity">Model type.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type.</typeparam>
-    public abstract class AbstractValidator<TRequest, TEntity, TPrimaryKey> 
+    public abstract class AbstractValidator<TRequest, TEntity, TPrimaryKey>
         : AbstractValidator<TRequest> where TEntity : class
     {
-        private readonly IRepository<TEntity, TPrimaryKey> _repository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpContextAccessor _accessor;
+        private readonly IRepository<TEntity, TPrimaryKey> repository;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IHttpContextAccessor accessor;
         public const string ID_ROUTE = "id";
         private const string EQUALS_METHOD = "Equals";
 
@@ -31,22 +31,22 @@ namespace Library.Core.Validators
         /// <param name="accessor"></param>
         public AbstractValidator(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _repository = unitOfWork.GetRepository<TEntity, TPrimaryKey>() ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            repository = unitOfWork.GetRepository<TEntity, TPrimaryKey>() ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
         }
 
         /// <summary>
         /// Gets <typeparamref name="TEntity"/> repository.
         /// </summary>
         /// <returns><typeparamref name="TEntity"/> <typeparamref name="TPrimaryKey"/> repository</returns>
-        public IRepository<TEntity, TPrimaryKey> GetRepository() => _repository;
+        public IRepository<TEntity, TPrimaryKey> GetRepository() => repository;
 
         /// <summary>
         /// Gets <typeparamref name="TEntity"/> repository.
         /// </summary>
         /// <returns><typeparamref name="TEntity"/> <typeparamref name="TPrimaryKey"/> repository</returns>
-        public IUnitOfWork GetUnitOfWork() => _unitOfWork;
+        public IUnitOfWork GetUnitOfWork() => unitOfWork;
 
         /// <summary>
         /// Checks if the <paramref name="requestValue"/> already exists for entity <typeparamref name="TEntity"/>
@@ -60,7 +60,7 @@ namespace Library.Core.Validators
         {
             var predicate = ReflectionUtility.GetMethodPredicate<TEntity, T>(requestValue, propertyName, EQUALS_METHOD);
 
-            return await _repository.Exists(predicate);
+            return await repository.Exists(predicate);
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace Library.Core.Validators
         /// <returns>True if <paramref name="updateValue"/> is different from current property value of the entity, false otherwise</returns>
         public async Task<bool> IsUpdate<T>(T updateValue, string propertyName)
         {
-            var id = HttpContextUtility.GetIdFromRoute<TPrimaryKey>(_accessor, ID_ROUTE);
+            var id = HttpContextUtility.GetIdFromRoute<TPrimaryKey>(accessor, ID_ROUTE);
             var method = ReflectionUtility.GetMethod(typeof(T), EQUALS_METHOD);
 
-            var existingEntity = await _repository.GetById(id);
+            var existingEntity = await repository.GetById(id);
             var existingEntityValue = typeof(TEntity).GetProperty(propertyName).GetValue(existingEntity);
 
             return !(bool)method.Invoke(updateValue, new object[] { existingEntityValue });

@@ -14,7 +14,7 @@ namespace Library.Api.Controllers
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    public class UsersController 
+    public class UsersController
         : ControllerBase
     {
         private readonly IUserService userService;

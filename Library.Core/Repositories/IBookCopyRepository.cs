@@ -5,7 +5,7 @@ namespace Library.Core.Repositories
     /// <summary>
     /// Defines interface for a BookCopy repository.
     /// </summary>
-    public interface IBookCopyRepository 
+    public interface IBookCopyRepository
         : IRepository<BookCopy, int>
     {
     }

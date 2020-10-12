@@ -10,7 +10,7 @@ namespace Library.Infrastructure.EfRepositories
     /// <summary>
     /// Defines BookCopy repository class
     /// </summary>
-    public class BookCopyRepository 
+    public class BookCopyRepository
         : RepositoryBase<BookCopy, int>, IBookCopyRepository
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace Library.Infrastructure.EfRepositories
         /// </summary>
         /// <param name="context">Library context</param>
         /// <param name="processor">Sieve processor</param>
-        public BookCopyRepository(LibraryContext context, ISieveProcessor processor) 
+        public BookCopyRepository(LibraryContext context, ISieveProcessor processor)
             : base(context, processor)
         {
         }

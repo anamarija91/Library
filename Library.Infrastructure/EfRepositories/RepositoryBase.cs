@@ -17,7 +17,7 @@ namespace Library.Infrastructure.EfRepositories
     /// Defines repository base class.
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    public abstract class RepositoryBase<TEntity, TPrimaryKey> 
+    public abstract class RepositoryBase<TEntity, TPrimaryKey>
         : IRepository<TEntity, TPrimaryKey> where TEntity : class
     {
         protected LibraryContext Context { get; }

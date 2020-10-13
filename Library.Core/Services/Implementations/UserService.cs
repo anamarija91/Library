@@ -3,6 +3,7 @@ using Library.Core.Model.Entities;
 using Library.Core.Requests;
 using Library.Core.Results;
 using Library.Core.UnitsOfWork;
+using Library.Core.Utils;
 using Library.Core.Validators;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,20 @@ namespace Library.Core.Services
     public class UserService
         : ServiceBase, IUserService
     {
+        private readonly IMicroblinkClientService microblinkClientService;
+        private readonly IMRZDataService mRZDataService;
 
         /// <summary>
         /// Initilizes new instance of <see cref="UserService"/>
         /// </summary>
         /// <param name="unitOfWork">Unit of work.</param>
-        public UserService(IUnitOfWork unitOfWork) 
+        /// <param name="microblinkClientService">Microblink client service</param>
+        /// <param name="mRZDataService">MrzData service</param>
+        public UserService(IUnitOfWork unitOfWork, IMicroblinkClientService microblinkClientService, IMRZDataService mRZDataService)
             : base(unitOfWork)
         {
-
+            this.microblinkClientService = microblinkClientService ?? throw new ArgumentNullException(nameof(microblinkClientService));
+            this.mRZDataService = mRZDataService ?? throw new ArgumentNullException(nameof(mRZDataService));
         }
 
         /// <inheritdoc />
@@ -42,6 +48,40 @@ namespace Library.Core.Services
             await UnitOfWork.Commit();
 
             return new UserResult(userEntity);
+        }
+
+        /// <inheritdoc />
+        public async Task<UserResult> CreateUserWithMRTD(ImageRequest request)
+        {
+            var userData = await microblinkClientService.CallMRTDRecognizer(request);
+
+            using (var transaction = UnitOfWork.GetNewTransaction())
+            {
+                try
+                {
+                    var mrzDataResult = await mRZDataService.CreateMrzData(userData);
+
+                    var userEntity = new User
+                    {
+                        FirstName = userData.FirstName,
+                        LastName = userData.LastName,
+                        DateOfBirth = Helpers.GetDateFromString(userData.DOB, ProjectConstants.MRTDDateFormat),
+                        MrzdataId = mrzDataResult.Id
+                    };
+
+                    await UnitOfWork.Users.Add(userEntity);
+                    await UnitOfWork.Commit();
+
+                    transaction.CommitTransaction();
+
+                    return new UserResult(userEntity);
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackTransaction();
+                    throw;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -64,7 +104,7 @@ namespace Library.Core.Services
         /// <inheritdoc />
         public async Task<UserResult> GetById(int userId)
         {
-            var user = await  ValidatorUtility.GetById(UnitOfWork.Users, userId);
+            var user = await ValidatorUtility.GetById(UnitOfWork.Users, userId);
 
             return new UserResult(user);
         }

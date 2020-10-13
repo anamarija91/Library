@@ -16,12 +16,14 @@
     /// <summary>
     /// Defines user create request.
     /// </summary>
-    public class UserCreateRequest 
-        : UserRequest { }
+    public class UserCreateRequest
+        : UserRequest
+    { }
 
     /// <summary>
     /// Defines user update request.
     /// </summary>
-    public class UserUpdateRequest 
-        : UserRequest { }
+    public class UserUpdateRequest
+        : UserRequest
+    { }
 }

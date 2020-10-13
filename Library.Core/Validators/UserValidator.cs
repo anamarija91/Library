@@ -28,7 +28,7 @@ namespace Library.Core.Validators
 
             _ = RuleFor(r => r.Email)
                     .EmailAddress().When(r => !string.IsNullOrEmpty(r.DateOfBirth)).WithMessage("Valid email required.");
-            
+
             //.MustAsync(async (mail, cancellation) => !await Exists(mail, "Email"))
             //.WithMessage("Email must be unique!");
 
@@ -37,7 +37,7 @@ namespace Library.Core.Validators
                     .NotEmpty().WithMessage("Date of Birth is required.")
                     .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
                     .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
-           
+
             _ = RuleFor(r => r.Address)
                     .NotEmpty().WithMessage("Address is required.");
 

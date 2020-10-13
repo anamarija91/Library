@@ -22,6 +22,30 @@
             <param name="bookTitleId">Book Title Id</param>
             <returns></returns>
         </member>
+        <member name="T:Library.Api.Controllers.MicroblinkClientController">
+            <summary>
+            Defines microblink client controller
+            </summary>
+        </member>
+        <member name="M:Library.Api.Controllers.MicroblinkClientController.#ctor(Library.Core.Services.IMicroblinkClientService)">
+            <summary>
+            Initializes new instance of microblink controller.
+            </summary>
+            <param name="microblinkClientService">Microblink client service</param>
+        </member>
+        <member name="M:Library.Api.Controllers.MicroblinkClientController.GetInfo">
+            <summary>
+            Get available recognizers and additional data from microblink cloud api 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.MicroblinkClientController.CallMRTDRecognizer(Library.Core.Requests.ImageRequest)">
+            <summary>
+            Calls MRTD recognizer and returns rawMrzString part of response
+            </summary>
+            <param name="request">Image request</param>
+            <returns>Returns mrtd recognizer response as <see cref="T:Library.Core.Results.MrzParserResult"/>  </returns>
+        </member>
         <member name="T:Library.Api.Controllers.RentalsController">
             <summary>
             Defines rental controller.
@@ -92,11 +116,18 @@
             <param name="id">User id</param>
             <returns>Returns user as <see cref="T:Library.Core.Results.UserResult"/></returns>
         </member>
-        <member name="M:Library.Api.Controllers.UsersController.Post(Library.Core.Requests.UserCreateRequest)">
+        <member name="M:Library.Api.Controllers.UsersController.Create(Library.Core.Requests.UserCreateRequest)">
             <summary>
             Create new user.
             </summary>
             <param name="request">User create request as <see cref="T:Library.Core.Requests.UserCreateRequest"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.CreateUserWithMRTD(Library.Core.Requests.ImageRequest)">
+            <summary>
+            Creates new user from MRTD and saves MRTD data
+            </summary>
+            <param name="request">Image request</param>
             <returns></returns>
         </member>
         <member name="M:Library.Api.Controllers.UsersController.Put(System.Int32,Library.Core.Requests.UserUpdateRequest)">
@@ -135,6 +166,18 @@
             <param name="configuration">Configuration.</param>
             <param name="sectionKey">Section key.</param>
             <returns>Return foramted configuration.</returns>
+        </member>
+        <member name="T:Library.Api.Extensions.HttpClientDependancyInjection">
+            <summary>
+            Adds http clients to dependancy injection 
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.HttpClientDependancyInjection.AddHttpClientsToDependancyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds http clients to dependency injection.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
         </member>
         <member name="T:Library.Api.Extensions.ServiceDependancyInjection">
             <summary>
@@ -238,6 +281,7 @@
                 - HttpContext Accessor
                 - Unit of work
                 - Validation
+                - HttpClients
                 
                 Missing:
                 -- Versioning

@@ -17,8 +17,9 @@ namespace Library.Core.Model.Entities
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+        public int? MrzdataId { get; set; }
 
+        public virtual Mrzdata Mrzdata { get; set; }
         public virtual ICollection<Rental> Rental { get; set; }
     }
 }

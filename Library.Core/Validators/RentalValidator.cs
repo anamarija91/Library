@@ -31,7 +31,7 @@ namespace Library.Core.Validators
                     .NotEmpty().WithMessage("DateRented is required.")
                     .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
                     .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
-        }  
+        }
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace Library.Core.Validators
         {
 
             _ = RuleFor(r => new { r.UserId, r.BookCopyId })
-                  .MustAsync(async (userBookValues, cancellation) => await unitOfWork.Rentals.Exists(r => r.UserId == userBookValues.UserId 
+                  .MustAsync(async (userBookValues, cancellation) => await unitOfWork.Rentals.Exists(r => r.UserId == userBookValues.UserId
                                                                                                           && r.BookCopyId == userBookValues.BookCopyId
                                                                                                           && !r.DateReturned.HasValue))
                   .WithMessage("Rent event for bookCopyId and userId with no return date doesn't exist.");

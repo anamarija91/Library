@@ -14,19 +14,23 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[BookCopy]"
+         "Name": "[Books].[BookCopy]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[BookTitle]"
+         "Name": "[Books].[BookTitle]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Rental]"
+         "Name": "[Rentals].[Rental]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[User]"
+         "Name": "[Users].[MRZData]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Users].[User]"
       }
    ],
    "UseDatabaseNames": false,

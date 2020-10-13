@@ -7,7 +7,7 @@ namespace Library.Core.Repositories
     /// <summary>
     /// Defines interface for book title repository.
     /// </summary>
-    public interface IBookTitleRepository 
+    public interface IBookTitleRepository
         : IRepository<BookTitle, int>
     {
         /// <summary>

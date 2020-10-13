@@ -6,7 +6,8 @@ namespace Library.Infrastructure.Settings
     /// <summary>
     /// Defines validation class for database settings.
     /// </summary>
-    public class DatabaseSettings : IValidatable
+    public class DatabaseSettings
+        : IValidatable
     {
         public string Host { get; set; }
 
@@ -29,16 +30,6 @@ namespace Library.Infrastructure.Settings
             if (string.IsNullOrEmpty(Database))
             {
                 throw new ArgumentException("Databse is required!");
-            }
-
-            if (string.IsNullOrEmpty(User))
-            {
-                throw new ArgumentException("User is required!");
-            }
-
-            if (string.IsNullOrEmpty(Password))
-            {
-                throw new ArgumentException("Password is required!");
             }
         }
     }

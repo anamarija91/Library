@@ -8,7 +8,7 @@ namespace Library.Core.Repositories
     /// <summary>
     /// Defines interface for book rental repository.
     /// </summary>
-    public interface IRentalRepository 
+    public interface IRentalRepository
         : IRepository<Rental, int>
     {
         /// <summary>

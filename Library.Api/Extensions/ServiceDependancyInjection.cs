@@ -1,4 +1,6 @@
-﻿using Library.Core.Services;
+﻿using Library.Core.Parsers;
+using Library.Core.Services;
+using Library.Infrastructure.Parsers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Api.Extensions
@@ -19,6 +21,10 @@ namespace Library.Api.Extensions
             _ = services.AddScoped<IRentalService, RentalService>();
             _ = services.AddScoped<IBookTitlesService, BookTitlesService>();
             _ = services.AddScoped<IMicroblinkClientService, MicroblinkClientService>();
+            _ = services.AddScoped<IMRZDataService, MrzDataService>();
+
+            _ = services.AddSingleton<IParserFactory, ParserFactory>();
+
             return services;
         }
     }

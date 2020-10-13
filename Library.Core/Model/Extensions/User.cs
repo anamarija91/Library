@@ -20,7 +20,6 @@ namespace Library.Core.Model.Entities
             Email = request.Email;
             PhoneNumber = request.PhoneNumber;
             DateOfBirth = Helpers.GetDateFromString(request.DateOfBirth, ProjectConstants.DateFormat);
-            Address = request.Address;
         }
     }
 }

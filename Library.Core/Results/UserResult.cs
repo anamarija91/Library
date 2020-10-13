@@ -1,4 +1,5 @@
 ﻿using Library.Core.Model.Entities;
+using Library.Core.Utils;
 
 namespace Library.Core.Results
 {
@@ -13,7 +14,6 @@ namespace Library.Core.Results
         public string DateOfBirth { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string Address { get; set; }
 
         /// <summary>
         /// Initialize new instance of <see cref="UserResult"/> class.
@@ -25,10 +25,9 @@ namespace Library.Core.Results
             Id = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            DateOfBirth = user.DateOfBirth.Date.ToString("d");
+            DateOfBirth = user.DateOfBirth.Date.ToString(ProjectConstants.DateFormat);
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
-            Address = user.Address;
         }
     }
 }

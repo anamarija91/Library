@@ -1,35 +1,35 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using Library.Core.Model.Entities;
 
 namespace Library.Core.Results
 {
     /// <summary>
-    /// Defines MRZData response from MRTD recognizer
+    /// Defines MRZData Result for data from MRZData table
     /// </summary>
-    [Serializable]
     public class MrzDataResult
     {
-        [JsonProperty("result")]
-        public Result Result { get; set; }
-    }
+        /// <summary>
+        /// Initialize new instance of <see cref="MrzDataResult"/>
+        /// </summary>
+        /// <param name="mrzData">MrzData entity</param>
+        public MrzDataResult(Mrzdata mrzData)
+        {
+            Id = mrzData.Id;
+            FirstRow = mrzData.FirstRow;
+            SecondRow = mrzData.SecondRow;
+            ThirdRow = mrzData.ThirdRow;
+            IsDOBvalid = mrzData.Dobvalid;
+            IsCardNumberValid = mrzData.CardNumberValid;
+            IsDOEvalid = mrzData.Doevalid;
+            CompositeCheckValid = mrzData.CompositeCheckValid;
+        }
 
-    /// <summary>
-    /// Defines MRZData response in result from MRTDD recognizer
-    /// </summary>
-    [Serializable]
-    public class Result
-    {
-        [JsonProperty("mrzData")]
-        public MrzData MrzData { get; set; }
-    }
-
-    /// <summary>
-    /// Defines rawMrzString response in MRZData response
-    /// </summary>
-    [Serializable]
-    public class MrzData
-    {
-        [JsonProperty("rawMrzString")]
-        public string RawMrzString { get; set; }
+        public int Id { get; set; }
+        public string FirstRow { get; set; }
+        public string SecondRow { get; set; }
+        public string ThirdRow { get; set; }
+        public bool? IsDOBvalid { get; set; }
+        public bool? IsCardNumberValid { get; set; }
+        public bool? IsDOEvalid { get; set; }
+        public bool? CompositeCheckValid { get; set; }
     }
 }

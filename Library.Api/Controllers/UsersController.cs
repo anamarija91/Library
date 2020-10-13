@@ -66,9 +66,24 @@ namespace Library.Api.Controllers
         [HttpPost]
         [Route("")]
         [Produces(typeof(CreatedAtActionResult))]
-        public async Task<IActionResult> Post([FromBody] UserCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] UserCreateRequest request)
         {
             var user = await userService.Create(request);
+
+            return CreatedAtAction(nameof(Get), new { id = user.Id }, null);
+        }
+
+        /// <summary>
+        /// Creates new user from MRTD and saves MRTD data
+        /// </summary>
+        /// <param name="request">Image request</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/MRTD")]
+        [Produces(typeof(CreatedAtActionResult))]
+        public async Task<IActionResult> CreateUserWithMRTD([FromForm] ImageRequest request)
+        {
+            var user = await userService.CreateUserWithMRTD(request);
 
             return CreatedAtAction(nameof(Get), new { id = user.Id }, null);
         }

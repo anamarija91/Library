@@ -1,5 +1,6 @@
 ﻿using Library.Core.Clients;
 using Library.Core.Exceptions;
+using Library.Core.Parsers;
 using Library.Core.Requests;
 using Library.Core.Results;
 using Library.Core.Utils;
@@ -16,16 +17,17 @@ namespace Library.Core.Services
     public class MicroblinkClientService
         : IMicroblinkClientService
     {
-
         private readonly MicroblinkClient microblinkClient;
+        private readonly IParserFactory parserFactory;
 
         /// <summary>
         /// Initializes new instance of <see cref="MicroblinkClientService"/>
         /// </summary>
         /// <param name="microblinkClient">Microblink client.</param>
-        public MicroblinkClientService(MicroblinkClient microblinkClient)
+        public MicroblinkClientService(MicroblinkClient microblinkClient, IParserFactory parserFactory)
         {
             this.microblinkClient = microblinkClient ?? throw new ArgumentNullException(nameof(microblinkClient));
+            this.parserFactory = parserFactory ?? throw new ArgumentNullException(nameof(parserFactory));
         }
 
         /// <inherutdoc />
@@ -35,7 +37,7 @@ namespace Library.Core.Services
         }
 
         /// <inheritdoc />
-        public async Task<MrzDataResult> CallMRTDRecognizer(ImageRequest request)
+        public async Task<MrzParserResult> CallMRTDRecognizer(ImageRequest request)
         {
             var mrtdRequest = await CreateMRTDRequest(request?.Image);
 
@@ -48,7 +50,19 @@ namespace Library.Core.Services
                 throw new MicroblinkClientException("Client response resulted with empty rawMrzString data.");
             }
 
-            return mrzDataResult;
+            return ReadRawMrzString(mrzDataResult.Result.MrzData.RawMrzString);
+        }
+
+        /// <summary>
+        /// Calls parser and reads rawMrzString
+        /// </summary>
+        /// <param name="rawString"></param>
+        /// <returns></returns>
+        private MrzParserResult ReadRawMrzString(string rawString)
+        {
+            var parser = parserFactory.CreateDataParser(rawString);
+
+            return parser.ReadAndValidateBackSideData();
         }
 
         /// <summary>
@@ -71,12 +85,14 @@ namespace Library.Core.Services
         /// </summary>
         /// <param name="response">String Response from MRTD recognizer</param>
         /// <returns></returns>
-        private MrzDataResult DeserializeMRTDResponse(string response)
+        private MrzDataResponse DeserializeMRTDResponse(string response)
         {
-            var jsonSerializerSettings = new JsonSerializerSettings();
-            jsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
 
-            var result = JsonConvert.DeserializeObject<MrzDataResult>(response, jsonSerializerSettings);
+            var result = JsonConvert.DeserializeObject<MrzDataResponse>(response, jsonSerializerSettings);
 
             return result;
         }

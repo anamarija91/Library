@@ -25,6 +25,14 @@ namespace Library.Core.Services
         Task<UserResult> Create(UserCreateRequest request);
 
         /// <summary>
+        /// Creates new user with required fields from MRTD recognizer result.
+        /// Also adds parsed mrzData to database.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<UserResult> CreateUserWithMRTD(ImageRequest request);
+
+        /// <summary>
         /// Gets user entity by id.
         /// </summary>
         /// <param name="userId">User id.</param>

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Library.Core.Services
 {
+    /// <summary>
+    /// Defines Microblink client interface
+    /// </summary>
     public interface IMicroblinkClientService
     {
         /// <summary>
@@ -17,7 +20,7 @@ namespace Library.Core.Services
         /// Cals MRTD recognizer from microblink client. If rawMrzString is empty throws <see cref="MicroblinkClientException"/>
         /// </summary>
         /// <param name="request">Image request</param>
-        /// <returns>Returns rawMrzString data result as <see cref="MrzDataResult"/></returns>
-        Task<MrzDataResult> CallMRTDRecognizer(ImageRequest request);
+        /// <returns>Returns OCR data result as <see cref="MrzParserResult"/></returns>
+        Task<MrzParserResult> CallMRTDRecognizer(ImageRequest request);
     }
 }

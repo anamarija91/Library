@@ -22,6 +22,7 @@ namespace Library.Infrastructure.EfUnitsOfWork
         private IBookCopyRepository bookCopyRepository;
         private IBookTitleRepository bookTitleRepository;
         private IRentalRepository rentalRepository;
+        private IMrzDataRepository mrzDataRepository;
 
         public UnitOfWork(LibraryContext context, ISieveProcessor processor)
         {
@@ -86,6 +87,29 @@ namespace Library.Infrastructure.EfUnitsOfWork
         }
 
         /// <inheritdoc/>
+        public IMrzDataRepository MrzData
+        {
+            get
+            {
+                if (mrzDataRepository is null)
+                {
+                    mrzDataRepository = new MrzDataRepository(context, processor);
+                }
+
+                return mrzDataRepository;
+            }
+        }
+
+        /// <inheritdoc/>
+        public IDatabaseTransaction GetNewTransaction()
+        {
+            var transaction = new DatabaseTransaction(context);
+            transaction.CreateTransaction();
+
+            return transaction;
+        }
+
+        /// <inheritdoc/>
         public async Task Commit() => _ = await context.SaveChangesAsync();
 
 
@@ -100,6 +124,7 @@ namespace Library.Infrastructure.EfUnitsOfWork
                 bool _ when type == typeof(BookTitle) => BookTitles as IRepository<T, TKey>,
                 bool _ when type == typeof(User) => Users as IRepository<T, TKey>,
                 bool _ when type == typeof(Rental) => Rentals as IRepository<T, TKey>,
+                bool _ when type == typeof(Mrzdata) => MrzData as IRepository<T, TKey>,
                 _ => throw new ArgumentException("The requested type doesn't have an exposed repository"),
             };
         }

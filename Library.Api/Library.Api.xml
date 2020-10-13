@@ -44,7 +44,7 @@
             Calls MRTD recognizer and returns rawMrzString part of response
             </summary>
             <param name="request">Image request</param>
-            <returns>Returns mrtd recognizer response as <see cref="T:Library.Core.Results.MrzDataResult"/>  </returns>
+            <returns>Returns mrtd recognizer response as <see cref="T:Library.Core.Results.MrzParserResult"/>  </returns>
         </member>
         <member name="T:Library.Api.Controllers.RentalsController">
             <summary>
@@ -116,11 +116,18 @@
             <param name="id">User id</param>
             <returns>Returns user as <see cref="T:Library.Core.Results.UserResult"/></returns>
         </member>
-        <member name="M:Library.Api.Controllers.UsersController.Post(Library.Core.Requests.UserCreateRequest)">
+        <member name="M:Library.Api.Controllers.UsersController.Create(Library.Core.Requests.UserCreateRequest)">
             <summary>
             Create new user.
             </summary>
             <param name="request">User create request as <see cref="T:Library.Core.Requests.UserCreateRequest"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Api.Controllers.UsersController.CreateUserWithMRTD(Library.Core.Requests.ImageRequest)">
+            <summary>
+            Creates new user from MRTD and saves MRTD data
+            </summary>
+            <param name="request">Image request</param>
             <returns></returns>
         </member>
         <member name="M:Library.Api.Controllers.UsersController.Put(System.Int32,Library.Core.Requests.UserUpdateRequest)">

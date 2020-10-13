@@ -6,8 +6,7 @@ using Library.Core.Model.Entities;
 
 namespace Library.Infrastructure.EfModels
 {
-    public partial class LibraryContext 
-        : DbContext
+    public partial class LibraryContext : DbContext
     {
         public LibraryContext()
         {
@@ -20,6 +19,7 @@ namespace Library.Infrastructure.EfModels
 
         public virtual DbSet<BookCopy> BookCopy { get; set; }
         public virtual DbSet<BookTitle> BookTitle { get; set; }
+        public virtual DbSet<Mrzdata> Mrzdata { get; set; }
         public virtual DbSet<Rental> Rental { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -27,6 +27,8 @@ namespace Library.Infrastructure.EfModels
         {
             modelBuilder.Entity<BookCopy>(entity =>
             {
+                entity.ToTable("BookCopy", "Books");
+
                 entity.HasIndex(e => e.BookTitleId)
                     .HasName("IXFK_BookCopy_BookTitle");
 
@@ -38,6 +40,8 @@ namespace Library.Infrastructure.EfModels
 
             modelBuilder.Entity<BookTitle>(entity =>
             {
+                entity.ToTable("BookTitle", "Books");
+
                 entity.Property(e => e.Author)
                     .IsRequired()
                     .HasMaxLength(250)
@@ -49,8 +53,31 @@ namespace Library.Infrastructure.EfModels
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Mrzdata>(entity =>
+            {
+                entity.ToTable("MRZData", "Users");
+
+                entity.Property(e => e.Dobvalid).HasColumnName("DOBValid");
+
+                entity.Property(e => e.Doevalid).HasColumnName("DOEValid");
+
+                entity.Property(e => e.FirstRow)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SecondRow)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ThirdRow)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Rental>(entity =>
             {
+                entity.ToTable("Rental", "Rentals");
+
                 entity.HasIndex(e => e.BookCopyId)
                     .HasName("IXFK_Rental_BookCopy");
 
@@ -76,10 +103,10 @@ namespace Library.Infrastructure.EfModels
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Address)
-                    .IsRequired()
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                entity.ToTable("User", "Users");
+
+                entity.HasIndex(e => e.MrzdataId)
+                    .HasName("IXFK_User_MRZData");
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
@@ -97,9 +124,16 @@ namespace Library.Infrastructure.EfModels
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
+                entity.Property(e => e.MrzdataId).HasColumnName("MRZDataId");
+
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Mrzdata)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.MrzdataId)
+                    .HasConstraintName("FK_User_MRZData");
             });
 
             OnModelCreatingPartial(modelBuilder);

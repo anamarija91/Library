@@ -44,7 +44,7 @@ namespace Library.Api.Controllers
         /// Calls MRTD recognizer and returns rawMrzString part of response
         /// </summary>
         /// <param name="request">Image request</param>
-        /// <returns>Returns mrtd recognizer response as <see cref="MrzDataResult"/>  </returns>
+        /// <returns>Returns mrtd recognizer response as <see cref="MrzParserResult"/>  </returns>
         [HttpPost]
         [Route("Recognizer")]
         public async Task<IActionResult> CallMRTDRecognizer([FromForm] ImageRequest request)

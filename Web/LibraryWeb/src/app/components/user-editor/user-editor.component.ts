@@ -7,6 +7,8 @@ import { LibraryRestService } from '../../services/library-rest.service';
 
 import { UserData } from 'src/models/userData';
 import { EmailData } from '../../../models/emailData';
+import { PhoneData } from 'src/models/phoneData';
+import { ControlNames } from '../../constants/controlNames.enum';
 
 @Component({
   selector: 'app-user-editor',
@@ -18,22 +20,15 @@ export class UserEditorComponent implements OnInit, OnDestroy {
 
   private formData: UserData;
 
-  public emailControl = new FormControl('', [Validators.required, Validators.email]);
-
-  public firstNameControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern('^[a-zA-Z]+$'),
-    Validators.minLength(2),
-  ]);
-
   private destroy$: Subject<void> = new Subject<void>();
+
+  public readonly controlNames: typeof ControlNames = ControlNames;
 
   constructor(private formBuilder: FormBuilder, protected cdr: ChangeDetectorRef, private rest: LibraryRestService) {
     this.userDataForm = this.createFormGroup();
   }
 
   public ngOnInit(): void {
-    this.addEmail();
   }
 
   public ngOnDestroy(): void {
@@ -41,22 +36,27 @@ export class UserEditorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public get phoneForms(): FormArray {
-    return this.userDataForm.get('phones') as FormArray;
+  public getFormArray(name: ControlNames): FormArray {
+    return this.userDataForm.get(name) as FormArray;
   }
 
-  public get emailForms(): FormArray {
-    return this.userDataForm.get('emails') as FormArray;
+  public getFormControl(name: ControlNames): FormControl {
+    return this.userDataForm.get(name) as FormControl;
   }
 
   public createFormGroup(): FormGroup {
     return this.formBuilder.group({
-      firstName: this.firstNameControl,
-      lastName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
+      firstName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
       dateOfBirth: new FormControl('', Validators.required),
-      address: new FormControl('', Validators.required),
       emails: this.formBuilder.array([]),
-      // phones: this.formBuilder.array([]),
+      phones: this.formBuilder.array([]),
     });
   }
 
@@ -65,26 +65,24 @@ export class UserEditorComponent implements OnInit, OnDestroy {
     date.setDate(date.getDate() + 1);
 
     const convertDate = date.toISOString().substring(0, 10);
-    this.userDataForm.get('dateOfBirth').setValue(convertDate, {
+    this.userDataForm.get(ControlNames.dateOfBirth).setValue(convertDate, {
       onlyself: true,
     });
   }
 
-  public onSubmit(): void {
+  public submit(): void {
     if (this.userDataForm.invalid) {
       return;
     }
 
     const value = this.userDataForm.value;
 
-    console.log(this.userDataForm.value.emails);
-
     this.formData = {
-      firstName: value.firstName,
+      firstName: value[ControlNames.firstName],
       lastName: value.lastName,
       dateOfBirth: (value.dateOfBirth as string).split('-').reverse().join('/'),
-      email: (value.emails as EmailData[]).map((val: EmailData) => val.email).join(','),
-      address: value.address,
+      emails: (value.emails as EmailData[]).map((val: EmailData): string => val.email).join(','),
+      phones: (value.phones as PhoneData[]).map((val: PhoneData): string => val.phone).join(',')
     };
     console.log(this.formData);
 
@@ -97,39 +95,32 @@ export class UserEditorComponent implements OnInit, OnDestroy {
       );
   }
 
-  public addPhone(): void {
-    const phoneGroup = this.formBuilder.group({
-      phone: '',
-    });
+  public addItem(name: ControlNames): void {
+    if (name === ControlNames.emails) {
+      const emailGroup = this.formBuilder.group({
+            email: new FormControl('', [Validators.email]),
+          });
 
-    this.phoneForms.push(phoneGroup);
+      this.getFormArray(ControlNames.emails).push(emailGroup);
+    } else if (name === ControlNames.phones) {
+      const phoneGroup = this.formBuilder.group({
+            phone: new FormControl('', [Validators.pattern(/^\+385-(1|[1-9][0-9])-[0-9]{3}-[0-9]{4}$/)])
+          });
+
+      this.getFormArray(ControlNames.phones).push(phoneGroup);
+    }
   }
 
-  public addEmail(): void {
-    const emailGroup = this.formBuilder.group({
-      email: new FormControl('', [Validators.email]),
-    });
-
-    this.emailForms.push(emailGroup);
+  public deleteItem(i: number, name: ControlNames): void {
+    this.getFormArray(name).removeAt(i);
   }
 
-  public deletePhone(i): void {
-    this.phoneForms.removeAt(i);
-  }
+  public getNameErrorMessage(control: FormControl): string {
 
-  public deleteEmail(i): void {
-    this.emailForms.removeAt(i);
-  }
-
-  public getNameErrorMessage() {
-    if (this.firstNameControl.hasError('required')) {
+    if (control.hasError('required')) {
       return 'You must enter a value';
     }
 
-    if (this.firstNameControl.hasError('minlength')) {
-      return 'You must enter at least 2 characters';
-    }
-
-    return this.firstNameControl.hasError('pattern') ? 'Only letters are allowed' : '';
+    return control.hasError('minlength') ? 'You must enter at least 2 characters' : '';
   }
 }

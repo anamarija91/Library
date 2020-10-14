@@ -4,76 +4,107 @@
   </mat-card-header>
 
   <mat-card-content>
-    <form [formGroup]="userDataForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="userDataForm">
       <!-- First name -->
-      <mat-label>First Name:</mat-label>
-      <mat-form-field class="full">
-        <input matInput [formControl]="firstNameControl" />
-        <mat-error *ngIf="emailControl.invalid">{{ getNameErrorMessage() }}</mat-error>
-      </mat-form-field>
+      <div *ngIf="getFormControl(controlNames.firstName); let nameControl">
+        <mat-label>First Name:</mat-label>
+        <mat-form-field class="full">
+          <input matInput [formControl]="nameControl" />
+          <mat-error *ngIf="nameControl.invalid">{{ getNameErrorMessage(nameControl) }}</mat-error>
+        </mat-form-field>
+      </div>
 
       <!-- Last name -->
-      <mat-label>Last Name:</mat-label>
-      <mat-form-field class="full">
-        <input matInput formControlName="lastName" />
-      </mat-form-field>
+      <div *ngIf="getFormControl(controlNames.lastName); let nameControl">
+        <mat-label>Last Name:</mat-label>
+        <mat-form-field class="full">
+          <input matInput [formControl]="nameControl" />
+          <mat-error *ngIf="nameControl.invalid">{{ getNameErrorMessage(nameControl) }}</mat-error>
+        </mat-form-field>
+      </div>
 
       <!-- Date picker -->
-      <mat-label>Date of birth:</mat-label>
-      <mat-form-field>
-        <input matInput readonly [matDatepicker]="picker" formControlName="dateOfBirth" (dateChange)="date($event)" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      <div *ngIf="getFormControl(controlNames.dateOfBirth); let dateControl">
+        <mat-label>Date of birth:</mat-label>
+        <mat-form-field>
+          <input matInput readonly [matDatepicker]="picker" [formControl]="dateControl" (dateChange)="date($event)" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="dateControl.invalid">{{ getNameErrorMessage(dateControl) }}</mat-error>
+        </mat-form-field>
+      </div>
 
       <!-- Email -->
-      <mat-label>Emails:</mat-label>
-      <br />
-      <div formArrayName="emails">
-        <div *ngFor="let item of emailForms.controls; let i = index">
-          <div [formGroupName]="i">
-            <mat-form-field class="xs">
-              <mat-label>Email {{ i + 1 }}</mat-label>
-              <input matInput formControlName="email" />
+      <div *ngIf="getFormArray(controlNames.emails); let emailForms">
+        <mat-label>Emails:</mat-label>
+        <br />
+        <div formArrayName="emails">
+          <div *ngFor="let item of emailForms.controls; let i = index">
+            <div [formGroupName]="i">
+              <mat-form-field class="xs">
+                <mat-label>Email {{ i + 1 }}</mat-label>
+                <input matInput formControlName="email" />
 
-              <button
-                mat-button
-                matSuffix
-                mat-stroked-button
-                color="warn"
-                #tooltip="matTooltip"
-                matTooltip="Delete Email"
-                (click)="deleteEmail(i)"
-              >
-                <mat-icon>remove</mat-icon>
-              </button>
-              <mat-error *ngIf="item.invalid">You must enter a valid email</mat-error>
-            </mat-form-field>
+                <button
+                  mat-button
+                  matSuffix
+                  mat-stroked-button
+                  color="warn"
+                  #tooltip="matTooltip"
+                  matTooltip="Delete Email"
+                  (click)="deleteItem(i, controlNames.emails)"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <mat-error *ngIf="item.invalid">You must enter a valid email</mat-error>
+              </mat-form-field>
+            </div>
           </div>
+          <button
+            mat-button
+            mat-stroked-button
+            color="primary"
+            #tooltip="matTooltip"
+            matTooltip="Add Email"
+            (click)="addItem(controlNames.emails)"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
-        <button
-          mat-button
-          mat-stroked-button
-          color="primary"
-          #tooltip="matTooltip"
-          matTooltip="Add Email"
-          (click)="addEmail()"
-        >
-          <mat-icon>add</mat-icon>
-        </button>
       </div>
 
       <br />
 
-      <!-- Address -->
-      <mat-label>Address:</mat-label>
-      <mat-form-field class="full">
-        <input matInput formControlName="address" />
-      </mat-form-field>
+      <!-- Phones -->
+      <div *ngIf="getFormArray(controlNames.phones); let phoneForms">
+        <mat-label>Phones:</mat-label>
+        <br />
+        <div formArrayName="phones">
+          <div *ngFor="let item of phoneForms.controls; let i = index">
+            <div [formGroupName]="i">
+              <mat-form-field class="xs">
+                <mat-label>Phone {{ i + 1 }}</mat-label>
+                <input matInput formControlName="phone" placeholder="+385-99-999-9999" />
+
+                <button mat-button matSuffix mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="Delete Phone"
+                  (click)="deleteItem(i, controlNames.phones)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <mat-error *ngIf="item.invalid">You must enter a valid phone</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <button mat-button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="Add Phone"
+            (click)="addItem(controlNames.phones)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <br />
 
       <!-- Submit -->
       <div class="button-wrapper">
-        <button mat-flat-button color="primary" [disabled]="!userDataForm.valid">Add new user</button>
+        <button (click)=submit() mat-flat-button color="primary" [disabled]="!userDataForm.valid">Add new user</button>
       </div>
     </form>
   </mat-card-content>

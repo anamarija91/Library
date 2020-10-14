@@ -12,7 +12,7 @@ import { UserEditorComponent } from './components/user-editor/user-editor.compon
 import { AppConfigService } from './app-config.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './material.module';
-import { DatePipe } from '@angular/common';
+import { ToastrModule } from 'ngx-toastr';
 
 const appInitializerFn = () => {
   return (): Promise<void> => {
@@ -30,6 +30,7 @@ const appInitializerFn = () => {
     HttpClientModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     {
@@ -37,8 +38,7 @@ const appInitializerFn = () => {
       useFactory: appInitializerFn,
       multi: true,
       deps: [AppConfigService],
-    },
-    DatePipe,
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -5,7 +5,7 @@ namespace Library.Core.Exceptions
     /// <summary>
     ///  Defines an exception that is thrown when the validation fails.
     /// </summary>
-    public class ValidationFailedException 
+    public class ValidationFailedException
         : CustomException
     {
         /// <summary>

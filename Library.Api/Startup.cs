@@ -54,6 +54,7 @@ namespace Library.Api
         ///     - Unit of work
         ///     - Validation
         ///     - Cors
+        ///     - HttpClients
         ///     
         ///     Missing:
         ///     -- Versioning
@@ -99,7 +100,7 @@ namespace Library.Api
             _ = services.AddValidatorsToDependencyInjection();
             _ = services.AddSettingsToDependencyInjection(Configuration);
 
-            //_ = services.AddHttpClientToDependancyInjection();
+            _ = services.AddHttpClientsToDependancyInjection();
 
             _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
             _ = services.AddScoped<ISieveProcessor, LibrarySieveProcessor>();

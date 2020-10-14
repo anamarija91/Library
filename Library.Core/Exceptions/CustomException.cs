@@ -5,7 +5,7 @@ namespace Library.Core.Exceptions
     /// <summary>
     /// Defines the base exception class which can be handled by the global exception handling middleware.
     /// </summary>
-    public class CustomException 
+    public class CustomException
         : Exception
     {
         /// <summary>

@@ -20,6 +20,7 @@ namespace Library.Api.Extensions
             _ = services.AddTransient<IValidator<UserCreateRequest>, UserCreateValidator>();
             _ = services.AddTransient<IValidator<UserUpdateRequest>, UserUpdateValidator>();
             _ = services.AddTransient<IValidator<CreateRentalRequest>, CreateRentalValidator>();
+            _ = services.AddTransient<IValidator<ImageRequest>, ImageRequestValidator>();
 
             return services;
         }

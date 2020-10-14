@@ -15,6 +15,12 @@ namespace Library.Core.UnitsOfWork
         Task Commit();
 
         /// <summary>
+        /// Gets context transaction.
+        /// </summary>
+        /// <returns>Transaction object</returns>
+        IDatabaseTransaction GetNewTransaction();
+
+        /// <summary>
         /// Gets a Repository depending on it's type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -38,8 +44,18 @@ namespace Library.Core.UnitsOfWork
         IBookTitleRepository BookTitles { get; }
 
         /// <summary>
-        /// Uset to get book rentals.
+        /// Used to get book rentals repository.
         /// </summary>
         IRentalRepository Rentals { get; }
+
+        /// <summary>
+        /// Used to get MrzData respository.
+        /// </summary>
+        IMrzDataRepository MrzData { get; }
+
+        /// <summary>
+        /// Used to get usercontacts repository.
+        /// </summary>
+        IUserContactRepository UserContacts { get; }
     }
 }

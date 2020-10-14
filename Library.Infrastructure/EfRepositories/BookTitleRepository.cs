@@ -12,7 +12,7 @@ namespace Library.Infrastructure.EfRepositories
     /// <summary>
     /// Defines Book title repository class.
     /// </summary>
-    public class BookTitleRepository 
+    public class BookTitleRepository
         : RepositoryBase<BookTitle, int>, IBookTitleRepository
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Library.Infrastructure.EfRepositories
         /// </summary>
         /// <param name="context">Library context</param>
         /// <param name="processor">Sieve processor</param>
-        public BookTitleRepository(LibraryContext context, ISieveProcessor processor) 
+        public BookTitleRepository(LibraryContext context, ISieveProcessor processor)
             : base(context, processor)
         {
         }

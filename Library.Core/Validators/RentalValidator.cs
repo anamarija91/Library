@@ -2,7 +2,6 @@
 using Library.Core.Model.Entities;
 using Library.Core.Requests;
 using Library.Core.UnitsOfWork;
-using Library.Core.Utils;
 using Microsoft.AspNetCore.Http;
 
 namespace Library.Core.Validators
@@ -28,10 +27,8 @@ namespace Library.Core.Validators
 
             _ = RuleFor(r => r.DateRented)
                     .Cascade(CascadeMode.Stop)
-                    .NotEmpty().WithMessage("DateRented is required.")
-                    .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
-                    .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
-        }  
+                    .DateValidation();
+        }
     }
 
     /// <summary>
@@ -47,16 +44,14 @@ namespace Library.Core.Validators
         {
 
             _ = RuleFor(r => new { r.UserId, r.BookCopyId })
-                  .MustAsync(async (userBookValues, cancellation) => await unitOfWork.Rentals.Exists(r => r.UserId == userBookValues.UserId 
+                  .MustAsync(async (userBookValues, cancellation) => await unitOfWork.Rentals.Exists(r => r.UserId == userBookValues.UserId
                                                                                                           && r.BookCopyId == userBookValues.BookCopyId
                                                                                                           && !r.DateReturned.HasValue))
                   .WithMessage("Rent event for bookCopyId and userId with no return date doesn't exist.");
 
             _ = RuleFor(r => r.DateReturned)
                    .Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithMessage("DateRented is required.")
-                   .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
-                   .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
+                   .DateValidation();
         }
     }
 }

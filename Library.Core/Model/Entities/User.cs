@@ -8,17 +8,18 @@ namespace Library.Core.Model.Entities
     {
         public User()
         {
+            Mrzdata = new HashSet<Mrzdata>();
             Rental = new HashSet<Rental>();
+            UserContact = new HashSet<UserContact>();
         }
 
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
 
+        public virtual ICollection<Mrzdata> Mrzdata { get; set; }
         public virtual ICollection<Rental> Rental { get; set; }
+        public virtual ICollection<UserContact> UserContact { get; set; }
     }
 }

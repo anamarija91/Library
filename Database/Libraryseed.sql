@@ -4,32 +4,53 @@ GO
 
 -- USERS
 
-SET IDENTITY_INSERT [dbo].[User] ON
+SET IDENTITY_INSERT [Users].[User] ON
 
-INSERT INTO [dbo].[User]
+INSERT INTO [Users].[User]
            ([Id]
 		   ,[FirstName]
            ,[LastName]
-           ,[DateOfBirth]
-           ,[Email]
-           ,[Address]
-		   ,[PhoneNumber])
+           ,[DateOfBirth])
      VALUES
-		  (1, 'Chuck', 'Gates', '12/31/1969', 'eu@ridiculus.com', 'Donec Avenue 180', '(333) 533-7717'),
-		  (2, 'Ruby', 'Richard', '01/03/1983', 'ru.rich@adipiscing.com', 'Cras Street 14', '(584) 908-7399'),
-		  (3, 'Cynthia', 'Wilcox', '10/25/1999', 'cynthia@erat.edu', 'Sem. Rd.  2', '(236) 622-2482'),
-		  (4, 'Carson', 'Weeks', '02/03/1978', 'weeks.carson@egetmetus.org', 'Auctor Road 100', '(330) 912-1374'),
-		  (5, 'Colette', 'Foley', '05/04/2010', 'facilisis.lorem@consequatnec.co.m', 'Montes, St. 69', '(565) 158-3387')
+		  (1, 'Chuck', 'Gates', '12/31/1969'),
+		  (2, 'Ruby', 'Richard', '01/03/1983'),
+		  (3, 'Cynthia', 'Wilcox', '10/25/1999'),
+		  (4, 'Carson', 'Weeks', '02/03/1978'),
+		  (5, 'Colette', 'Foley', '05/04/2010')
   
 GO
 
-SET IDENTITY_INSERT [dbo].[User] OFF
+SET IDENTITY_INSERT [Users].[User] OFF
+
+-- USER CONTACTS
+
+SET IDENTITY_INSERT [Users].[UserContact] ON
+
+INSERT INTO [Users].[UserContact]
+           ([Id]
+		   ,[UserId]
+           ,[Contact]
+           ,[Type])
+     VALUES 
+		  (1, 1, 'eu@ridiculus.com', 'EMAIL' ),
+		  (2, 1, '+385-33-533-7717', 'PHONE'),
+		  (3, 2, 'ru.rich@adipiscing.com', 'EMAIL'),
+		  (4, 1, 'facilisis.lorem@consequatnec.com', 'EMAIL' ),
+		  (5, 2, '+385-91-622-2482', 'PHONE'),
+		  (6, 3, 'cynthia@erat.edu', 'EMAIL'),
+		  (7, 4, 'weeks.carson@egetmetus.org', 'EMAIL'),
+		  (8, 4, '+385-99-912-1374', 'PHONE'),
+		  (9, 4, '+385-51-158-3387', 'PHONE')
+
+SET IDENTITY_INSERT [Users].[UserContact] OFF
+
+GO
 
 -- BOOK TITLES
 
-SET IDENTITY_INSERT [BookTitle] ON
+SET IDENTITY_INSERT [Books].[BookTitle] ON
 
-INSERT INTO [dbo].[BookTitle]
+INSERT INTO [Books].[BookTitle]
            ([Id]
 		   ,[Title]
            ,[Author])
@@ -49,13 +70,13 @@ INSERT INTO [dbo].[BookTitle]
 
 GO
 
-SET IDENTITY_INSERT [dbo].[BookTitle] OFF
+SET IDENTITY_INSERT [Books].[BookTitle] OFF
 
 -- BOOK COPY
 
-SET IDENTITY_INSERT [dbo].[BookCopy] ON
+SET IDENTITY_INSERT [Books].[BookCopy] ON
 
-INSERT INTO [dbo].[BookCopy]
+INSERT INTO [Books].[BookCopy]
            ([Id],
 		   [BookTitleId])
      VALUES
@@ -90,13 +111,13 @@ INSERT INTO [dbo].[BookCopy]
 
 GO
 
-SET IDENTITY_INSERT [dbo].[BookCopy] OFF
+SET IDENTITY_INSERT [Books].[BookCopy] OFF
 
 -- Rental
 
-SET IDENTITY_INSERT [dbo].[Rental] ON
+SET IDENTITY_INSERT [Rentals].[Rental] ON
 
-INSERT INTO [dbo].[Rental]
+INSERT INTO [Rentals].[Rental]
            ([Id]
 		   ,[UserId]
 		   ,[BookCopyId]
@@ -114,4 +135,4 @@ INSERT INTO [dbo].[Rental]
 		   (7, 3, 10, '04/15/2020',  '05/15/2020', '06/10/2020'),
 		   (8, 5, 10, '07/01/2020',  '07/31/2020', NULL)   
 
-SET IDENTITY_INSERT [dbo].[Rental] OFF
+SET IDENTITY_INSERT [Rentals].[Rental] OFF

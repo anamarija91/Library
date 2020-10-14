@@ -1,4 +1,5 @@
 ﻿using Library.Core.Model.Entities;
+using Library.Core.Utils;
 
 namespace Library.Core.Results
 {
@@ -18,9 +19,9 @@ namespace Library.Core.Results
             UserId = rental.UserId;
             BookCopyId = rental.BookCopyId;
 
-            DateRented = rental.DateRented.Date.ToString("d");
-            DateDue = rental.DateDue.Date.ToString("d").ToString();
-            DateReturned = rental.DateReturned?.Date.ToString("d").ToString();
+            DateRented = rental.DateRented.Date.ToString(ProjectConstants.DateFormat);
+            DateDue = rental.DateDue.Date.ToString(ProjectConstants.DateFormat);
+            DateReturned = rental.DateReturned?.Date.ToString(ProjectConstants.DateFormat);
         }
 
         public int Id { get; set; }

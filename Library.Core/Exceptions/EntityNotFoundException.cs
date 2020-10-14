@@ -3,7 +3,7 @@
     /// <summary>
     ///  Defines an exception that is thrown when the requested entity has not been found.
     /// </summary>
-    public class EntityNotFoundException 
+    public class EntityNotFoundException
         : CustomException
     {
         /// <summary>

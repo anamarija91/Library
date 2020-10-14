@@ -167,6 +167,39 @@
             <param name="sectionKey">Section key.</param>
             <returns>Return foramted configuration.</returns>
         </member>
+        <member name="T:Library.Api.Extensions.Cors.CorsServiceExtensions">
+            <summary>
+            Defines cors extension.
+            </summary>
+        </member>
+        <member name="F:Library.Api.Extensions.Cors.CorsServiceExtensions.CORSPOLICY">
+            <summary>
+            Sets constant for cors policy.
+            </summary>
+        </member>
+        <member name="F:Library.Api.Extensions.Cors.CorsServiceExtensions.ALLOWORIGIN">
+            <summary>
+            Sets constant for allow origin.
+            </summary>
+        </member>
+        <member name="F:Library.Api.Extensions.Cors.CorsServiceExtensions.EXPOSEHEADERS">
+            <summary>
+            Sets constant for expose headers.
+            </summary>
+        </member>
+        <member name="M:Library.Api.Extensions.Cors.CorsServiceExtensions.AddApiCors(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Adds api cors to service descriptors.
+            </summary>
+            <param name="services">Service descriptors.</param>
+            <param name="configuration">Configuration properties. </param>
+        </member>
+        <member name="M:Library.Api.Extensions.Cors.CorsServiceExtensions.UseApiCors(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Extends application pipeline to use cors.
+            </summary>
+            <param name="app">Application pipeline.</param>
+        </member>
         <member name="T:Library.Api.Extensions.HttpClientDependancyInjection">
             <summary>
             Adds http clients to dependancy injection 
@@ -281,13 +314,13 @@
                 - HttpContext Accessor
                 - Unit of work
                 - Validation
+                - Cors
                 - HttpClients
                 
                 Missing:
                 -- Versioning
                 -- Authorization
                 -- Logging
-                -- Cors
             </summary>
             <param name="services"></param>
         </member>
@@ -299,11 +332,11 @@
                 - Routing
                 - Swagger
                 - Endpoints
+                - Cors
                 
              Missing:
                 
                 - Authentication
-                - Cors
             </summary>
             <param name="app"></param>
             <param name="env"></param>

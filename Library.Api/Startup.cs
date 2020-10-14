@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using Library.Api.Extensions;
 using Library.Api.Extensions.Configuration;
+using Library.Api.Extensions.Cors;
 using Library.Api.Extensions.Swagger;
 using Library.Core.Exceptions;
 using Library.Core.UnitsOfWork;
@@ -52,13 +53,13 @@ namespace Library.Api
         ///     - HttpContext Accessor
         ///     - Unit of work
         ///     - Validation
+        ///     - Cors
         ///     - HttpClients
         ///     
         ///     Missing:
         ///     -- Versioning
         ///     -- Authorization
         ///     -- Logging
-        ///     -- Cors
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -69,6 +70,8 @@ namespace Library.Api
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             services.AddControllers();
+
+            services.AddApiCors(Configuration);
 
             services.AddSwaggerDocumentation(typeof(Startup).Namespace);
 
@@ -110,11 +113,11 @@ namespace Library.Api
         ///     - Routing
         ///     - Swagger
         ///     - Endpoints
+        ///     - Cors
         ///     
         ///  Missing:
         ///     
         ///     - Authentication
-        ///     - Cors
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
@@ -126,6 +129,8 @@ namespace Library.Api
             }
 
             app.UseMiddleware<CustomExceptionMiddleware>();
+
+            app.UseApiCors();
 
             app.UseRouting();
 

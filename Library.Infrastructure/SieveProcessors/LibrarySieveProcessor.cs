@@ -46,7 +46,6 @@ namespace Library.Infrastructure.SieveProcessors
         /// <returns></returns>
         private SievePropertyMapper MapUserProperties(SievePropertyMapper mapper)
         {
-            _ = mapper.Property<User>(u => u.Email).CanFilter().CanSort();
             _ = mapper.Property<User>(u => u.FirstName).CanFilter().CanSort();
             _ = mapper.Property<User>(u => u.LastName).CanFilter().CanSort();
 

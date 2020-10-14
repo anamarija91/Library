@@ -10,19 +10,41 @@ INSERT INTO [Users].[User]
            ([Id]
 		   ,[FirstName]
            ,[LastName]
-           ,[DateOfBirth]
-           ,[Email]
-		   ,[PhoneNumber])
+           ,[DateOfBirth])
      VALUES
-		  (1, 'Chuck', 'Gates', '12/31/1969', 'eu@ridiculus.com', '(333) 533-7717'),
-		  (2, 'Ruby', 'Richard', '01/03/1983', 'ru.rich@adipiscing.com', '(584) 908-7399'),
-		  (3, 'Cynthia', 'Wilcox', '10/25/1999', 'cynthia@erat.edu', '(236) 622-2482'),
-		  (4, 'Carson', 'Weeks', '02/03/1978', 'weeks.carson@egetmetus.org', '(330) 912-1374'),
-		  (5, 'Colette', 'Foley', '05/04/2010', 'facilisis.lorem@consequatnec.com', '(565) 158-3387')
+		  (1, 'Chuck', 'Gates', '12/31/1969'),
+		  (2, 'Ruby', 'Richard', '01/03/1983'),
+		  (3, 'Cynthia', 'Wilcox', '10/25/1999'),
+		  (4, 'Carson', 'Weeks', '02/03/1978'),
+		  (5, 'Colette', 'Foley', '05/04/2010')
   
 GO
 
 SET IDENTITY_INSERT [Users].[User] OFF
+
+-- USER CONTACTS
+
+SET IDENTITY_INSERT [Users].[UserContact] ON
+
+INSERT INTO [Users].[UserContact]
+           ([Id]
+		   ,[UserId]
+           ,[Contact]
+           ,[Type])
+     VALUES 
+		  (1, 1, 'eu@ridiculus.com', 'EMAIL' ),
+		  (2, 1, '+385-33-533-7717', 'PHONE'),
+		  (3, 2, 'ru.rich@adipiscing.com', 'EMAIL'),
+		  (4, 1, 'facilisis.lorem@consequatnec.com', 'EMAIL' ),
+		  (5, 2, '+385-91-622-2482', 'PHONE'),
+		  (6, 3, 'cynthia@erat.edu', 'EMAIL'),
+		  (7, 4, 'weeks.carson@egetmetus.org', 'EMAIL'),
+		  (8, 4, '+385-99-912-1374', 'PHONE'),
+		  (9, 4, '+385-51-158-3387', 'PHONE')
+
+SET IDENTITY_INSERT [Users].[UserContact] OFF
+
+GO
 
 -- BOOK TITLES
 

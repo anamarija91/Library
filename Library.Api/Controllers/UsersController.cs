@@ -76,7 +76,7 @@ namespace Library.Api.Controllers
         /// <summary>
         /// Creates new user from MRTD and saves MRTD data
         /// </summary>
-        /// <param name="request">Image request</param>
+        /// <param name="request">Image </param>
         /// <returns></returns>
         [HttpPost]
         [Route("/MRTD")]

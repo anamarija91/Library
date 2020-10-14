@@ -12,7 +12,8 @@ namespace Library.Core.Services
         /// Creates new MrzData entity from parsed MRTD recognition result
         /// </summary>
         /// <param name="result">MrzParserResult</param>
+        /// <param name="userId">User Id</param>
         /// <returns>Returns created entity as <see cref="MrzDataResult" </returns>
-        Task<MrzDataResult> CreateMrzData(MrzParserResult result);
+        Task<MrzDataResult> CreateMrzData(MrzParserResult result, int userId);
     }
 }

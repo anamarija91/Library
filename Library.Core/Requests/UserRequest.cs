@@ -1,4 +1,6 @@
-﻿namespace Library.Core.Requests
+﻿using System.Collections.Generic;
+
+namespace Library.Core.Requests
 {
     /// <summary>
     /// Defines user request.
@@ -8,9 +10,8 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DateOfBirth { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+        public IEnumerable<string> Emails { get; set; }
+        public IEnumerable<string> Phones { get; set; }
     }
 
     /// <summary>

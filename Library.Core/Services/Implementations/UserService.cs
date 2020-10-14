@@ -20,6 +20,7 @@ namespace Library.Core.Services
     {
         private readonly IMicroblinkClientService microblinkClientService;
         private readonly IMRZDataService mRZDataService;
+        private readonly IUserContactService userContactService;
 
         /// <summary>
         /// Initilizes new instance of <see cref="UserService"/>
@@ -27,11 +28,12 @@ namespace Library.Core.Services
         /// <param name="unitOfWork">Unit of work.</param>
         /// <param name="microblinkClientService">Microblink client service</param>
         /// <param name="mRZDataService">MrzData service</param>
-        public UserService(IUnitOfWork unitOfWork, IMicroblinkClientService microblinkClientService, IMRZDataService mRZDataService)
+        public UserService(IUnitOfWork unitOfWork, IMicroblinkClientService microblinkClientService, IMRZDataService mRZDataService, IUserContactService userContactService)
             : base(unitOfWork)
         {
             this.microblinkClientService = microblinkClientService ?? throw new ArgumentNullException(nameof(microblinkClientService));
             this.mRZDataService = mRZDataService ?? throw new ArgumentNullException(nameof(mRZDataService));
+            this.userContactService = userContactService ?? throw new ArgumentNullException(nameof(userContactService));
         }
 
         /// <inheritdoc />
@@ -42,11 +44,30 @@ namespace Library.Core.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var userEntity = new User(request);
+            var userEntity = new User
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                DateOfBirth = Helpers.GetDateFromString(request.DateOfBirth, ProjectConstants.DateFormat)
+            };
 
-            _ = await UnitOfWork.Users.Add(userEntity);
-            await UnitOfWork.Commit();
+            using (var transaction = UnitOfWork.GetNewTransaction())
+            {
+                try
+                {
+                    _ = await UnitOfWork.Users.Add(userEntity);
+                    await UnitOfWork.Commit();
 
+                    await userContactService.UpdateUserContacts(userEntity, request);
+
+                    transaction.CommitTransaction();
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackTransaction();
+                    throw;
+                }
+            }
             return new UserResult(userEntity);
         }
 
@@ -59,18 +80,18 @@ namespace Library.Core.Services
             {
                 try
                 {
-                    var mrzDataResult = await mRZDataService.CreateMrzData(userData);
 
                     var userEntity = new User
                     {
                         FirstName = userData.FirstName,
                         LastName = userData.LastName,
                         DateOfBirth = Helpers.GetDateFromString(userData.DOB, ProjectConstants.MRTDDateFormat),
-                        MrzdataId = mrzDataResult.Id
                     };
 
                     await UnitOfWork.Users.Add(userEntity);
                     await UnitOfWork.Commit();
+
+                    var mrzDataResult = await mRZDataService.CreateMrzData(userData, userEntity.Id);
 
                     transaction.CommitTransaction();
 
@@ -120,10 +141,27 @@ namespace Library.Core.Services
 
             var user = await ValidatorUtility.GetById(UnitOfWork.Users, userId);
 
-            user.UpdateUserData(request);
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.DateOfBirth = Helpers.GetDateFromString(request.DateOfBirth, ProjectConstants.DateFormat);
 
-            UnitOfWork.Users.Update(user);
-            await UnitOfWork.Commit();
+
+            using (var transaction = UnitOfWork.GetNewTransaction())
+            {
+                try
+                {
+                    await userContactService.UpdateUserContacts(user, request);
+                    UnitOfWork.Users.Update(user);
+                    await UnitOfWork.Commit();
+
+                    transaction.CommitTransaction();
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackTransaction();
+                    throw;
+                }
+            }
         }
     }
 }

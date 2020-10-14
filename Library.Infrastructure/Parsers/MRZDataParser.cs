@@ -1,4 +1,5 @@
-﻿using Library.Core.Parsers;
+﻿using Library.Core.Exceptions;
+using Library.Core.Parsers;
 using Library.Core.Results;
 using System;
 using System.Linq;
@@ -24,7 +25,6 @@ namespace Library.Infrastructure.Parsers
         /// <inheritdoc/>
         public MrzParserResult ReadAndValidateBackSideData()
         {
-            //TODO: handle exceptions
             var result = ParseData();
 
             result.IsCompositeCheckValid = ValidateCompositeCheck(result.FirstRow, result.SecondRow);
@@ -35,9 +35,12 @@ namespace Library.Infrastructure.Parsers
         /// <inheritdoc/>
         public MrzParserResult ParseData()
         {
-            var rows = rawString.Split('\n');
+            var rows = rawString.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-            //TODO: Check 3 rows and each length of 30
+            if (rows.Length != 3)
+            {
+                throw new MicroblinkClientException("rawMrzString data not valid.There should be 3 rows of length 30.");
+            }
 
             var result = new MrzParserResult
             {
@@ -45,6 +48,11 @@ namespace Library.Infrastructure.Parsers
                 SecondRow = rows[1],
                 ThirdRow = rows[2]
             };
+
+            if (result.FirstRow.Length != 30 || result.SecondRow.Length != 30 || result.ThirdRow.Length != 30)
+            {
+                throw new MicroblinkClientException("rawMrzString data not valid. Rows should have 30 characters.");
+            }
 
             var cardNumberValidModel = ParseAndValidateCardNumber(result.FirstRow);
 
@@ -172,7 +180,6 @@ namespace Library.Infrastructure.Parsers
             firstName = firstName.Replace(MRZDataParserConstants.FillerCharacter, ' ');
 
             return firstName.TrimEnd();
-
         }
 
         #endregion
@@ -297,9 +304,8 @@ namespace Library.Infrastructure.Parsers
                 bool _ when Char.IsNumber(character) => (int)char.GetNumericValue(character),
                 bool _ when Char.IsUpper(character) => character - offset,
                 bool _ when character.Equals(MRZDataParserConstants.FillerCharacter) => 0,
-                _ => 0 // TODO: throw exception?
+                _ => throw new MicroblinkClientException($"Character {character} is not valid.")
             };
-
         }
 
         /// <summary>

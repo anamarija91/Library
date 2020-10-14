@@ -22,6 +22,7 @@ namespace Library.Infrastructure.EfModels
         public virtual DbSet<Mrzdata> Mrzdata { get; set; }
         public virtual DbSet<Rental> Rental { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserContact> UserContact { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,21 +58,38 @@ namespace Library.Infrastructure.EfModels
             {
                 entity.ToTable("MRZData", "Users");
 
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IXFK_MRZData_User");
+
+                entity.Property(e => e.CardNumber)
+                    .HasMaxLength(9)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateOfExpiry).HasColumnType("date");
+
                 entity.Property(e => e.Dobvalid).HasColumnName("DOBValid");
 
                 entity.Property(e => e.Doevalid).HasColumnName("DOEValid");
 
                 entity.Property(e => e.FirstRow)
+                    .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SecondRow)
+                    .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ThirdRow)
+                    .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Mrzdata)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_MRZData_User");
             });
 
             modelBuilder.Entity<Rental>(entity =>
@@ -105,14 +123,7 @@ namespace Library.Infrastructure.EfModels
             {
                 entity.ToTable("User", "Users");
 
-                entity.HasIndex(e => e.MrzdataId)
-                    .HasName("IXFK_User_MRZData");
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -123,17 +134,29 @@ namespace Library.Infrastructure.EfModels
                     .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
+            });
 
-                entity.Property(e => e.MrzdataId).HasColumnName("MRZDataId");
+            modelBuilder.Entity<UserContact>(entity =>
+            {
+                entity.ToTable("UserContact", "Users");
 
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(50)
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IXFK_UserContact_User");
+
+                entity.Property(e => e.Contact)
+                    .IsRequired()
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Mrzdata)
-                    .WithMany(p => p.User)
-                    .HasForeignKey(d => d.MrzdataId)
-                    .HasConstraintName("FK_User_MRZData");
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserContact)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserContact_User");
             });
 
             OnModelCreatingPartial(modelBuilder);

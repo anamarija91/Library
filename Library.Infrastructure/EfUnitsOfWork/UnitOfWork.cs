@@ -23,6 +23,7 @@ namespace Library.Infrastructure.EfUnitsOfWork
         private IBookTitleRepository bookTitleRepository;
         private IRentalRepository rentalRepository;
         private IMrzDataRepository mrzDataRepository;
+        private IUserContactRepository userContactRepository;
 
         public UnitOfWork(LibraryContext context, ISieveProcessor processor)
         {
@@ -101,6 +102,20 @@ namespace Library.Infrastructure.EfUnitsOfWork
         }
 
         /// <inheritdoc/>
+        public IUserContactRepository UserContacts
+        {
+            get
+            {
+                if (userContactRepository is null)
+                {
+                    userContactRepository = new UserContactRepository(context, processor);
+                }
+
+                return userContactRepository;
+            }
+        }
+
+        /// <inheritdoc/>
         public IDatabaseTransaction GetNewTransaction()
         {
             var transaction = new DatabaseTransaction(context);
@@ -125,6 +140,7 @@ namespace Library.Infrastructure.EfUnitsOfWork
                 bool _ when type == typeof(User) => Users as IRepository<T, TKey>,
                 bool _ when type == typeof(Rental) => Rentals as IRepository<T, TKey>,
                 bool _ when type == typeof(Mrzdata) => MrzData as IRepository<T, TKey>,
+                bool _ when type == typeof(UserContact) => UserContacts as IRepository<T, TKey>,
                 _ => throw new ArgumentException("The requested type doesn't have an exposed repository"),
             };
         }

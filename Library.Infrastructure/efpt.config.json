@@ -31,6 +31,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "[Users].[User]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Users].[UserContact]"
       }
    ],
    "UseDatabaseNames": false,

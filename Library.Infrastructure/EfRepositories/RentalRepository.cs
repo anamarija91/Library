@@ -36,7 +36,7 @@ namespace Library.Infrastructure.EfRepositories
         /// <inheritdoc />
         public async Task<bool> IsBookCopyAvailable(int bookCopyId)
         {
-            return !(await Exists(r => r.BookCopyId == bookCopyId && !r.DateReturned.HasValue)); //TODO: also check if returned date less or equal than date od borrowing book
+            return !(await Exists(r => r.BookCopyId == bookCopyId && !r.DateReturned.HasValue));
         }
 
         /// <inheritdoc />

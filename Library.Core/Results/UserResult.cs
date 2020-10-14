@@ -18,6 +18,8 @@ namespace Library.Core.Results
         public IEnumerable<string> Emails { get; set; }
         public IEnumerable<string> Phones { get; set; }
 
+        public MRTDUserResult MRTDdata { get; set; }
+
         /// <summary>
         /// Initialize new instance of <see cref="UserResult"/> class.
         /// Copies data from User entity.
@@ -32,6 +34,12 @@ namespace Library.Core.Results
 
             Emails = user.UserContact?.Where(uc => uc.Type == ContactType.EMAIL.ToString()).Select(uc => uc.Contact);
             Phones = user.UserContact?.Where(uc => uc.Type == ContactType.PHONE.ToString()).Select(uc => uc.Contact);
+
+            var mrzdata = user.Mrzdata.FirstOrDefault();
+            if (mrzdata != null)
+            {
+                MRTDdata = new MRTDUserResult(mrzdata);
+            }
         }
     }
 }

@@ -6,20 +6,18 @@ namespace Library.Core.Model.Entities
 {
     public partial class Mrzdata
     {
-        public Mrzdata()
-        {
-            User = new HashSet<User>();
-        }
-
         public int Id { get; set; }
         public string FirstRow { get; set; }
         public string SecondRow { get; set; }
         public string ThirdRow { get; set; }
-        public bool? Dobvalid { get; set; }
-        public bool? CardNumberValid { get; set; }
-        public bool? Doevalid { get; set; }
-        public bool? CompositeCheckValid { get; set; }
+        public bool Dobvalid { get; set; }
+        public bool CardNumberValid { get; set; }
+        public bool Doevalid { get; set; }
+        public bool CompositeCheckValid { get; set; }
+        public int UserId { get; set; }
+        public string CardNumber { get; set; }
+        public DateTime? DateOfExpiry { get; set; }
 
-        public virtual ICollection<User> User { get; set; }
+        public virtual User User { get; set; }
     }
 }

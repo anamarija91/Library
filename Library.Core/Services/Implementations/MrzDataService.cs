@@ -1,6 +1,7 @@
 ﻿using Library.Core.Model.Entities;
 using Library.Core.Results;
 using Library.Core.UnitsOfWork;
+using Library.Core.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Library.Core.Services
         }
 
         /// <inheritdoc />
-        public async Task<MrzDataResult> CreateMrzData(MrzParserResult result)
+        public async Task<MrzDataResult> CreateMrzData(MrzParserResult result, int userId)
         {
             if (result is null)
             {
@@ -31,13 +32,16 @@ namespace Library.Core.Services
 
             var mrzDataEntity = new Mrzdata
             {
+                UserId = userId,
                 FirstRow = result.FirstRow,
                 SecondRow = result.SecondRow,
                 ThirdRow = result.ThirdRow,
                 Dobvalid = result.IsDOBValid,
                 CardNumberValid = result.IsCardNumberValid,
                 Doevalid = result.IsDOEValid,
-                CompositeCheckValid = result.IsCompositeCheckValid
+                CompositeCheckValid = result.IsCompositeCheckValid,
+                CardNumber = result.CardNumber,
+                DateOfExpiry = Helpers.GetDateFromString(result.DOE, ProjectConstants.MRTDDateFormat)
             };
 
             await UnitOfWork.MrzData.Add(mrzDataEntity);

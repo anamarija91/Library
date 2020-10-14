@@ -5,16 +5,16 @@ IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Books].[FK_BookC
 ALTER TABLE [Books].[BookCopy] DROP CONSTRAINT [FK_BookCopy_BookTitle]
 GO
 
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[FK_MRZData_User]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
+ALTER TABLE [Users].[MRZData] DROP CONSTRAINT [FK_MRZData_User]
+GO
+
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Rentals].[FK_Rental_BookCopy]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
 ALTER TABLE [Rentals].[Rental] DROP CONSTRAINT [FK_Rental_BookCopy]
 GO
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Rentals].[FK_Rental_User]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
 ALTER TABLE [Rentals].[Rental] DROP CONSTRAINT [FK_Rental_User]
-GO
-
-IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[FK_User_MRZData]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
-ALTER TABLE [Users].[User] DROP CONSTRAINT [FK_User_MRZData]
 GO
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[FK_UserContact_User]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
@@ -67,13 +67,16 @@ GO
 CREATE TABLE [Users].[MRZData]
 (
 	[Id] int NOT NULL IDENTITY (1, 1),
-	[FirstRow] varchar(30) NULL,
-	[SecondRow] varchar(30) NULL,
-	[ThirdRow] varchar(30) NULL,
-	[DOBValid] bit NULL,
-	[CardNumberValid] bit NULL,
-	[DOEValid] bit NULL,
-	[CompositeCheckValid] bit NULL
+	[FirstRow] varchar(30) NOT NULL,
+	[SecondRow] varchar(30) NOT NULL,
+	[ThirdRow] varchar(30) NOT NULL,
+	[DOBValid] bit NOT NULL,
+	[CardNumberValid] bit NOT NULL,
+	[DOEValid] bit NOT NULL,
+	[CompositeCheckValid] bit NOT NULL,
+	[UserId] int NOT NULL,
+	[CardNumber] varchar(9) NULL,
+	[DateOfExpiry] date NULL
 )
 GO
 
@@ -93,8 +96,7 @@ CREATE TABLE [Users].[User]
 	[Id] int NOT NULL IDENTITY (1, 1),
 	[FirstName] varchar(150) NOT NULL,
 	[LastName] varchar(150) NOT NULL,
-	[DateOfBirth] date NOT NULL,
-	[MRZDataId] int NULL
+	[DateOfBirth] date NOT NULL
 )
 GO
 
@@ -128,6 +130,10 @@ ALTER TABLE [Users].[MRZData]
 	PRIMARY KEY CLUSTERED ([Id] ASC)
 GO
 
+CREATE NONCLUSTERED INDEX [IXFK_MRZData_User] 
+ ON [Users].[MRZData] ([UserId] ASC)
+GO
+
 ALTER TABLE [Rentals].[Rental] 
  ADD CONSTRAINT [PK_BookRental]
 	PRIMARY KEY CLUSTERED ([Id] ASC)
@@ -144,10 +150,6 @@ GO
 ALTER TABLE [Users].[User] 
  ADD CONSTRAINT [PK_User]
 	PRIMARY KEY CLUSTERED ([Id] ASC)
-GO
-
-CREATE NONCLUSTERED INDEX [IXFK_User_MRZData] 
- ON [Users].[User] ([MRZDataId] ASC)
 GO
 
 ALTER TABLE [Users].[UserContact] 
@@ -169,16 +171,16 @@ ALTER TABLE [Books].[BookCopy] ADD CONSTRAINT [FK_BookCopy_BookTitle]
 	FOREIGN KEY ([BookTitleId]) REFERENCES [Books].[BookTitle] ([Id]) ON DELETE Cascade ON UPDATE Cascade
 GO
 
+ALTER TABLE [Users].[MRZData] ADD CONSTRAINT [FK_MRZData_User]
+	FOREIGN KEY ([UserId]) REFERENCES [Users].[User] ([Id]) ON DELETE Cascade ON UPDATE Cascade
+GO
+
 ALTER TABLE [Rentals].[Rental] ADD CONSTRAINT [FK_Rental_BookCopy]
 	FOREIGN KEY ([BookCopyId]) REFERENCES [Books].[BookCopy] ([Id]) ON DELETE Cascade ON UPDATE Cascade
 GO
 
 ALTER TABLE [Rentals].[Rental] ADD CONSTRAINT [FK_Rental_User]
 	FOREIGN KEY ([UserId]) REFERENCES [Users].[User] ([Id]) ON DELETE Cascade ON UPDATE Cascade
-GO
-
-ALTER TABLE [Users].[User] ADD CONSTRAINT [FK_User_MRZData]
-	FOREIGN KEY ([MRZDataId]) REFERENCES [Users].[MRZData] ([Id]) ON DELETE Cascade ON UPDATE Cascade
 GO
 
 ALTER TABLE [Users].[UserContact] ADD CONSTRAINT [FK_UserContact_User]

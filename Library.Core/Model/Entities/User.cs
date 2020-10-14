@@ -8,6 +8,7 @@ namespace Library.Core.Model.Entities
     {
         public User()
         {
+            Mrzdata = new HashSet<Mrzdata>();
             Rental = new HashSet<Rental>();
             UserContact = new HashSet<UserContact>();
         }
@@ -16,9 +17,8 @@ namespace Library.Core.Model.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int? MrzdataId { get; set; }
 
-        public virtual Mrzdata Mrzdata { get; set; }
+        public virtual ICollection<Mrzdata> Mrzdata { get; set; }
         public virtual ICollection<Rental> Rental { get; set; }
         public virtual ICollection<UserContact> UserContact { get; set; }
     }

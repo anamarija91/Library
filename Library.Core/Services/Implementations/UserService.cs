@@ -80,18 +80,18 @@ namespace Library.Core.Services
             {
                 try
                 {
-                    var mrzDataResult = await mRZDataService.CreateMrzData(userData);
 
                     var userEntity = new User
                     {
                         FirstName = userData.FirstName,
                         LastName = userData.LastName,
                         DateOfBirth = Helpers.GetDateFromString(userData.DOB, ProjectConstants.MRTDDateFormat),
-                        MrzdataId = mrzDataResult.Id
                     };
 
                     await UnitOfWork.Users.Add(userEntity);
                     await UnitOfWork.Commit();
+
+                    var mrzDataResult = await mRZDataService.CreateMrzData(userData, userEntity.Id);
 
                     transaction.CommitTransaction();
 

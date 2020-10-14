@@ -44,13 +44,18 @@ namespace Library.Core.UnitsOfWork
         IBookTitleRepository BookTitles { get; }
 
         /// <summary>
-        /// Used to get book rentals.
+        /// Used to get book rentals repository.
         /// </summary>
         IRentalRepository Rentals { get; }
 
         /// <summary>
-        /// Used to get MrzData
+        /// Used to get MrzData respository.
         /// </summary>
         IMrzDataRepository MrzData { get; }
+
+        /// <summary>
+        /// Used to get usercontacts repository.
+        /// </summary>
+        IUserContactRepository UserContacts { get; }
     }
 }

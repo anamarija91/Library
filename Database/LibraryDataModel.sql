@@ -17,6 +17,10 @@ IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[FK_User_
 ALTER TABLE [Users].[User] DROP CONSTRAINT [FK_User_MRZData]
 GO
 
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[FK_UserContact_User]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
+ALTER TABLE [Users].[UserContact] DROP CONSTRAINT [FK_UserContact_User]
+GO
+
 -- Drop Tables
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Books].[BookCopy]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
@@ -37,6 +41,10 @@ GO
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[User]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
 DROP TABLE [Users].[User]
+GO
+
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Users].[UserContact]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+DROP TABLE [Users].[UserContact]
 GO
 
 -- Create Tables
@@ -86,9 +94,16 @@ CREATE TABLE [Users].[User]
 	[FirstName] varchar(150) NOT NULL,
 	[LastName] varchar(150) NOT NULL,
 	[DateOfBirth] date NOT NULL,
-	[Email] varchar(250) NULL,
-	[PhoneNumber] varchar(50) NULL,
 	[MRZDataId] int NULL
+)
+GO
+
+CREATE TABLE [Users].[UserContact]
+(
+	[Id] int NOT NULL IDENTITY (1, 1),
+	[UserId] int NOT NULL,
+	[Contact] varchar(250) NOT NULL,
+	[Type] varchar(5) NOT NULL
 )
 GO
 
@@ -135,6 +150,19 @@ CREATE NONCLUSTERED INDEX [IXFK_User_MRZData]
  ON [Users].[User] ([MRZDataId] ASC)
 GO
 
+ALTER TABLE [Users].[UserContact] 
+ ADD CONSTRAINT [PK_UserContact]
+	PRIMARY KEY CLUSTERED ([Id] ASC)
+GO
+
+ALTER TABLE [Users].[UserContact] 
+ ADD CONSTRAINT [CHK_Type] CHECK (Type IN ('EMAIL','PHONE'))
+GO
+
+CREATE NONCLUSTERED INDEX [IXFK_UserContact_User] 
+ ON [Users].[UserContact] ([UserId] ASC)
+GO
+
 -- Create Foreign Key Constraints
 
 ALTER TABLE [Books].[BookCopy] ADD CONSTRAINT [FK_BookCopy_BookTitle]
@@ -150,5 +178,9 @@ ALTER TABLE [Rentals].[Rental] ADD CONSTRAINT [FK_Rental_User]
 GO
 
 ALTER TABLE [Users].[User] ADD CONSTRAINT [FK_User_MRZData]
-	FOREIGN KEY ([MRZDataId]) REFERENCES [Users].[MRZData] ([Id]) ON DELETE No Action ON UPDATE No Action
+	FOREIGN KEY ([MRZDataId]) REFERENCES [Users].[MRZData] ([Id]) ON DELETE Cascade ON UPDATE Cascade
+GO
+
+ALTER TABLE [Users].[UserContact] ADD CONSTRAINT [FK_UserContact_User]
+	FOREIGN KEY ([UserId]) REFERENCES [Users].[User] ([Id]) ON DELETE Cascade ON UPDATE Cascade
 GO

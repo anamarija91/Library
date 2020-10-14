@@ -22,6 +22,7 @@ namespace Library.Infrastructure.EfModels
         public virtual DbSet<Mrzdata> Mrzdata { get; set; }
         public virtual DbSet<Rental> Rental { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserContact> UserContact { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -110,10 +111,6 @@ namespace Library.Infrastructure.EfModels
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(150)
@@ -126,14 +123,34 @@ namespace Library.Infrastructure.EfModels
 
                 entity.Property(e => e.MrzdataId).HasColumnName("MRZDataId");
 
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.HasOne(d => d.Mrzdata)
                     .WithMany(p => p.User)
                     .HasForeignKey(d => d.MrzdataId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_User_MRZData");
+            });
+
+            modelBuilder.Entity<UserContact>(entity =>
+            {
+                entity.ToTable("UserContact", "Users");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IXFK_UserContact_User");
+
+                entity.Property(e => e.Contact)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserContact)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserContact_User");
             });
 
             OnModelCreatingPartial(modelBuilder);

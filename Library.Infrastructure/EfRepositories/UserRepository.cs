@@ -25,7 +25,8 @@ namespace Library.Infrastructure.EfRepositories
         /// <inhertitdoc />
         protected override IQueryable<User> GetTableQueryable()
         {
-            return base.GetTableQueryable();
+            return base.GetTableQueryable().Include(u => u.UserContact)
+                                           .Include(u => u.Mrzdata);
         }
 
         /// <inheritdoc cref="IRepository{TEntity, TPrimaryKey}.GetById(TPrimaryKey)"/>

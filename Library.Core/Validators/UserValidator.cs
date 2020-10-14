@@ -2,84 +2,57 @@
 using Library.Core.Model.Entities;
 using Library.Core.Requests;
 using Library.Core.UnitsOfWork;
-using Library.Core.Utils;
 using Microsoft.AspNetCore.Http;
 
 namespace Library.Core.Validators
 {
     /// <summary>
+    /// Defines class for user  validation rules.
+    /// -- Required fields: FirstName, LastName, Date of Birth
+    /// -- Additional validation: Emails, Phones 
+    public class UserValidator : AbstractValidator<UserRequest, User, int>
+    {
+        public UserValidator(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
+           : base(unitOfWork, accessor)
+        {
+            _ = RuleFor(r => r.FirstName).NameValidation();
+            _ = RuleFor(r => r.LastName).NameValidation();
+
+            _ = RuleFor(r => r.DateOfBirth)
+                    .Cascade(CascadeMode.Stop)
+                    .DateValidation();
+
+            _ = RuleForEach(r => r.Emails).EmailListValidation();
+
+            _ = RuleForEach(r => r.Phones).PhoneListValidation();
+        }
+
+    }
+
+    /// <summary>
     /// Defines class for user create validation rules.
-    /// -- Required fields: FirstName, LastName, Email, Date of Birth, Address
     /// 
-    /// TODO: Phone number validation
-    /// TODO: Unique fields ??
+    ///  /// TODO: Unique fields ??
     /// </summary>
-    public class UserCreateValidator : AbstractValidator<UserCreateRequest, User, int>
+    public class UserCreateValidator : UserValidator
     {
         public UserCreateValidator(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
             : base(unitOfWork, accessor)
         {
-            _ = RuleFor(r => r.FirstName)
-                    .NotEmpty().WithMessage("FirstName is required.");
-            _ = RuleFor(r => r.LastName)
-                    .NotEmpty().WithMessage("LastName is required.");
-            _ = RuleFor(r => r.Email)
-                    .NotEmpty().WithMessage("Email is required.");
-
-            _ = RuleFor(r => r.Email)
-                    .EmailAddress().When(r => !string.IsNullOrEmpty(r.DateOfBirth)).WithMessage("Valid email required.");
-
-            //.MustAsync(async (mail, cancellation) => !await Exists(mail, "Email"))
-            //.WithMessage("Email must be unique!");
-
-            _ = RuleFor(r => r.DateOfBirth)
-                    .Cascade(CascadeMode.Stop)
-                    .NotEmpty().WithMessage("Date of Birth is required.")
-                    .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
-                    .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
-
-            _ = RuleFor(r => r.Address)
-                    .NotEmpty().WithMessage("Address is required.");
-
-            // ?? phone number
         }
     }
 
     /// <summary>
-    /// Defines class for user update validation rules.
-    /// -- Required fields: FirstName, LastName, Email, Date of Birth, Address
+    /// Defines class for user update validation rules.      
     /// 
-    /// TODO: Phone number validation
-    /// TODO: Unique fields ??
+    /// TODO: Unique fields ?? (on update!!)
     /// </summary>
-    public class UserUpdateValidator : AbstractValidator<UserUpdateRequest, User, int>
+    public class UserUpdateValidator : UserValidator
     {
         public UserUpdateValidator(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
             : base(unitOfWork, accessor)
         {
-            _ = RuleFor(r => r.FirstName)
-                    .NotEmpty().WithMessage("FirstName is required.");
-            _ = RuleFor(r => r.LastName)
-                    .NotEmpty().WithMessage("LastName is required.");
-            _ = RuleFor(r => r.Email)
-                    .NotEmpty().WithMessage("Email is required.");
-
-            _ = RuleFor(r => r.Email)
-                    .EmailAddress().When(r => !string.IsNullOrEmpty(r.DateOfBirth)).WithMessage("Valid email required.");
-
-            //.MustAsync(async (mail, cancellation) => !await IsUpdateUnique(mail, "Email"))
-            //.WithMessage("Email must be unique!");
-
-            _ = RuleFor(r => r.DateOfBirth)
-                    .Cascade(CascadeMode.Stop)
-                    .NotEmpty().WithMessage("Date of Birth is required.")
-                    .Must(date => ValidatorUtility.IsDateValid(date, ProjectConstants.DateFormat))
-                    .WithMessage("Date is not in valid format. Required date format: " + ProjectConstants.DateFormat + " .");
-
-            _ = RuleFor(r => r.Address)
-                    .NotEmpty().WithMessage("Address is required.");
-
-            // ?? phone number
         }
     }
 }
+

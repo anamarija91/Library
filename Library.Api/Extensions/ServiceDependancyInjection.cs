@@ -18,6 +18,7 @@ namespace Library.Api.Extensions
         public static IServiceCollection AddServicesToDependencyInjection(this IServiceCollection services)
         {
             _ = services.AddScoped<IUserService, UserService>();
+            _ = services.AddScoped<IUserContactService, UserContactService>();
             _ = services.AddScoped<IRentalService, RentalService>();
             _ = services.AddScoped<IBookTitlesService, BookTitlesService>();
             _ = services.AddScoped<IMicroblinkClientService, MicroblinkClientService>();

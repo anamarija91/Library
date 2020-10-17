@@ -1,0 +1,7 @@
+<div *ngIf="control">
+  <mat-label [class]="getClassMandatoryName()">{{label}}</mat-label>
+  <mat-form-field class="full">
+    <input matInput [formControl]="control" />
+    <mat-error *ngIf="control.invalid">{{ getErrorMessage() }}</mat-error>
+  </mat-form-field>
+</div>

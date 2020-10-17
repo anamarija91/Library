@@ -1,0 +1,8 @@
+
+<mat-label [class]="getClassMandatoryName()">{{label}}</mat-label>
+<mat-form-field>
+  <input matInput readonly [matDatepicker]="picker" [max]="getMaxDate()" [formControl]="control" (dateChange)="date($event)" />
+  <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+  <mat-error *ngIf="control.invalid">{{ getErrorMessage() }}</mat-error>
+</mat-form-field>

@@ -32,3 +32,8 @@ form {
 .button-wrapper {
   margin-top: 10px;
 }
+
+.mandatory::after {
+  content: ' *';
+  color: red;
+}

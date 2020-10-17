@@ -1,0 +1,24 @@
+
+  <mat-label>{{label + 's:'}}</mat-label>
+  <br />
+    <div *ngFor="let item of formArray.controls; index as i">
+      <ng-container [formGroup]="item" >
+        <mat-form-field class="xs">
+          <mat-label>{{ label + (i + 1) }}</mat-label>
+          <input matInput formControlName="element" />
+          <mat-hint *ngIf="hint" align="end">{{hint}}</mat-hint>
+
+          <button mat-button matSuffix mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="Delete {{label}}"
+            (click)="deleteItem(i)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <mat-error *ngIf="item.invalid">You must enter a valid {{label}} {{hint ? ', ex:'+ hint : ''}}</mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
+    <button mat-button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="Add {{label}}"
+      (click)="addItem()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+<br />
